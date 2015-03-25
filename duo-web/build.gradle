@@ -1,8 +1,10 @@
 apply plugin: 'jetty'
 
 jettyRunWar.httpPort = 8080
-jettyRunWar.contextPath = '/'
+jettyRunWar.contextPath = ''
+
+project.webAppDirName = 'webapp'
 
 dependencies {
+    //compile(":duo-domain")
 }
-
