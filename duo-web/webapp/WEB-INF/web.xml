@@ -3,8 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <display-name>firstGradleProject</display-name>
-    <description>Gradle Spring Test</description>
+    <display-name>TDD, JPA Project</display-name>
+    <description>DUO</description>
 
     <!-- ============================================================= -->
     <!-- root application context -->
@@ -24,7 +24,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>tdd.duo.AppConfig</param-value>
+        <param-value>tdd.duo.config.AppConfig</param-value>
     </context-param>
 
     <servlet>
@@ -39,7 +39,7 @@
 
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>tdd.duo.WebConfig</param-value>
+            <param-value>tdd.duo.config.WebConfig</param-value>
         </init-param>
 
         <load-on-startup>1</load-on-startup>

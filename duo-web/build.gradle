@@ -6,5 +6,5 @@ jettyRunWar.contextPath = ''
 project.webAppDirName = 'webapp'
 
 dependencies {
-    //compile(":duo-domain")
+    compile project(':duo-domain')
 }
