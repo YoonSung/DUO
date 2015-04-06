@@ -22,6 +22,7 @@ import static org.mockito.Mockito.when;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import tdd.duo.domain.User;
 import tdd.duo.repository.UserRepository;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,7 +36,6 @@ public class UserControllerTest {
 
     @InjectMocks
     UserController userController;
-
 
     @Before
     public void setUp() {
@@ -52,10 +52,35 @@ public class UserControllerTest {
 
     @Test
     public void userRegister() throws Exception {
-        mockMvc.perform(post("/user/register").param("name","김우승").param("age","31"))
-                .andExpect(status().is3xxRedirection())
+        mockMvc.perform(post("/user/register")
+                .param("email", "test@gmail.com")
+                .param("name", "김우승")
+                .param("age", "31"))
+
+                .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/user/home"));
     }
 
+    @Test
+    public void userRegisterWithAlreadyExistion() throws Exception {
 
+        String testEmail = "test@gmail.com";
+        String testName = "김우승";
+        int testAge = 31;
+
+        User testUser = new User(testEmail, testName, testAge);
+
+        when(userRepository.findByEmail(testEmail)).thenReturn(testUser);
+
+
+        mockMvc.perform(post("/user/register")
+                .param("email", testEmail)
+                .param("name", testName)
+                .param("age", ""+testAge))
+
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + "/user/register" + WebConfig.RESOLVER_SUFFIX))
+                .andExpect(model().size(2))
+                .andExpect(model().attributeExists("error"));
+    }
 }

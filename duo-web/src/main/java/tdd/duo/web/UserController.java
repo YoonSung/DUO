@@ -1,7 +1,10 @@
 package tdd.duo.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tdd.duo.domain.User;
@@ -14,6 +17,8 @@ import tdd.duo.repository.UserRepository;
 @Controller
 public class UserController {
 
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     UserRepository userRepository;
 
@@ -23,9 +28,24 @@ public class UserController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(User user){
-        userRepository.save(user);
-        return "redirect:/user/home";
+    public String register(User user, Model model){
+
+        logger.debug("paramUser : {}", user);
+
+        User selectedUser = userRepository.findByEmail(user.getEmail());
+
+        logger.debug("selectedUser : {}", selectedUser);
+
+        //exists user
+        if (selectedUser != null && selectedUser.getEmail().equals(user.getEmail())) {
+            model.addAttribute("error", "user already exists");
+
+        } else {
+            userRepository.save(user);
+            return "redirect:/user/home";
+        }
+
+        return "/user/register";
     }
 
     @RequestMapping("/home")
