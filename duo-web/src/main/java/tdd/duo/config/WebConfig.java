@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan(basePackages = {"tdd.duo.web"})
 public class WebConfig {
 
-    public static final String RESOLVER_PREFIX = "/WEB-INF/view/";
+    public static final String RESOLVER_PREFIX = "/WEB-INF/view";
     public static final String RESOLVER_SUFFIX = ".jsp";
 
     @Bean

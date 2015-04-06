@@ -3,6 +3,7 @@ package tdd.duo.web;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
+import tdd.duo.config.WebConfig;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
@@ -27,7 +28,7 @@ public class HomeControllerTest {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
-                .andExpect(forwardedUrl("/WEB-INF/view/home.jsp"));
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + "home" + WebConfig.RESOLVER_SUFFIX));
     }
 
 
