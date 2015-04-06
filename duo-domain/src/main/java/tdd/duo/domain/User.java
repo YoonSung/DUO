@@ -1,6 +1,8 @@
 package tdd.duo.domain;
 
 import javax.persistence.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by yoon on 15. 3. 25..
@@ -37,6 +39,9 @@ public class User {
 */
     @Column
     private int age;
+
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     public User(){}
 
@@ -86,5 +91,23 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+
+    public boolean checkUserData() {
+        boolean result = false;
+        if ( this.name != null && !"".equals(this.name)
+                && this.email != null && !"".equals(this.email)
+                  && this.age > 0
+                    && checkUserEmail() )
+            result = true;
+
+        return result;
+    }
+
+    public boolean checkUserEmail() {
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(this.email);
+        return matcher.matches();
     }
 }

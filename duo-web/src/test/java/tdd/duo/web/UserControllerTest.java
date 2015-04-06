@@ -83,4 +83,27 @@ public class UserControllerTest {
                 .andExpect(model().size(2))
                 .andExpect(model().attributeExists("error"));
     }
+
+    @Test
+    public void 잘못된_유저() throws Exception{
+        String testEmail = "";
+        String testName = "김우승";
+        int testAge = 31;
+
+        User testUser = new User(testEmail, testName, testAge);
+
+        when(userRepository.findByEmail(testEmail)).thenReturn(testUser);
+
+
+        mockMvc.perform(post("/user/register")
+                .param("email", testEmail)
+                .param("name", testName)
+                .param("age", ""+testAge))
+
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + "/user/register" + WebConfig.RESOLVER_SUFFIX))
+                .andExpect(model().size(2))
+                .andExpect(model().attributeExists("error"));
+    }
+
 }
