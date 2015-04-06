@@ -20,9 +20,7 @@ public class UserControllerTest {
 
     @Before
     public void setUp() {
-        WebConfig webConfig = new WebConfig();
-        mockMvc = MockMvcBuilders.standaloneSetup(new UserController()).setViewResolvers(webConfig.internalResourceViewResolver()).build();
-
+        MvcTestUtil.getMockMvc(new UserController());
     }
 
     @Test
@@ -30,7 +28,7 @@ public class UserControllerTest {
         mockMvc.perform(get("/user/register"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/user/register"))
-                .andExpect(forwardedUrl("/WEB-INF/view//user/register.jsp"));
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + "register" + WebConfig.RESOLVER_SUFFIX));
     }
 
     @Test
@@ -38,7 +36,6 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register").param("name","김우승").param("age","31"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user/home"));
-
     }
 
 
