@@ -1,5 +1,7 @@
 package tdd.duo.domain;
 
+import org.springframework.util.StringUtils;
+
 import javax.persistence.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -94,20 +96,38 @@ public class User {
     }
 
 
-    public boolean checkUserData() {
-        boolean result = false;
-        if ( this.name != null && !"".equals(this.name)
-                && this.email != null && !"".equals(this.email)
-                  && this.age > 0
-                    && checkUserEmail() )
-            result = true;
+    public boolean checkEmail() {
 
-        return result;
-    }
+        if (StringUtils.isEmpty(this.email))
+            return false;
 
-    public boolean checkUserEmail() {
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(this.email);
         return matcher.matches();
+    }
+
+    public boolean canRegister() {
+
+        if (checkEmail() && checkName() && checkAge())
+            return true;
+
+        return false;
+    }
+
+    //TODO 나이제한
+    public boolean checkAge() {
+
+        if (age <= 0)
+            return false;
+
+        return true;
+    }
+
+    //TODO 길이제한
+    public boolean checkName() {
+        if (StringUtils.isEmpty(this.name))
+            return false;
+
+        return true;
     }
 }

@@ -1,8 +1,11 @@
 package tdd.duo.domain;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.util.StringUtils;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class UserTest {
 
@@ -10,40 +13,44 @@ public class UserTest {
     String name = "";
     int age = 0;
 
-    @org.junit.Before
-    public void setData(){
-        email = "asdf@naver.com";
-        name = "김우승";
-        age = 30;
+    User testUser;
+
+    @Before
+    public void setUp(){
+        testUser = new User("asdf@naver.com", "김우승", 30);
     }
 
     @Test
-    public void checkUserEmail(){
-        email = "";
-        User testUser = new User(email, name, age);
-        assertFalse(testUser.checkUserData());
+    public void 올바른_파라미터를_이용한_가입가능여부_확인() {
+        assertTrue(testUser.canRegister());
     }
 
     @Test
-    public void checkUserName(){
-        String name = "";
-        User testUser = new User(email, name, age);
-        assertFalse(testUser.checkUserData());
+    public void 이메일정합성_확인() {
+        assertTrue(testUser.checkEmail());
+
+        testUser.setEmail("");
+        assertFalse(testUser.checkEmail());
+
+        testUser.setEmail("test");
+        assertFalse(testUser.checkEmail());
     }
 
     @Test
-    public void checkUserAge(){
-        int age = 0;
-        User testUser = new User(email, name, age);
-        assertFalse(testUser.checkUserData());
+    public void 유저이름_확인() {
+        assertTrue(testUser.checkName());
+        testUser.setName("");
+        assertFalse(testUser.checkName());
     }
 
     @Test
-    public void 이메일_정합성_검사(){
-        String email = "test.co.kr";
-        User testUser = new User(email, name, age);
-        assertFalse(testUser.checkUserEmail());
+    public void 유저나이_확인() {
+        assertTrue(testUser.checkAge());
+        testUser.setAge(0);
+
+        assertFalse(testUser.checkAge());
+        testUser.setAge(-1);
+
+        assertFalse(testUser.checkAge());
     }
-
-
 }
