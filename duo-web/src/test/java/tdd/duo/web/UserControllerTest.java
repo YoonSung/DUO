@@ -65,10 +65,11 @@ public class UserControllerTest {
     public void userRegisterWithAlreadyExistion() throws Exception {
 
         String testEmail = "test@gmail.com";
+        String testPassword = "asdf";
         String testName = "김우승";
         int testAge = 31;
 
-        User testUser = new User(testEmail, testName, testAge);
+        User testUser = new User(testEmail, testPassword, testName, testAge);
 
         when(userRepository.findByEmail(testEmail)).thenReturn(testUser);
 
@@ -87,10 +88,11 @@ public class UserControllerTest {
     @Test
     public void 잘못된_유저() throws Exception{
         String testEmail = "";
+        String testPassword = "asdf";
         String testName = "김우승";
         int testAge = 31;
 
-        User testUser = new User(testEmail, testName, testAge);
+        User testUser = new User(testEmail, testPassword, testName, testAge);
 
         when(userRepository.findByEmail(testEmail)).thenReturn(testUser);
 

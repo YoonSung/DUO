@@ -22,6 +22,9 @@ public class User {
 
     @Column
     private String name;
+
+    @Column
+    private String password;
 /* TODO
     enum SEX {
 
@@ -47,8 +50,9 @@ public class User {
 
     public User(){}
 
-    public User(String email, String name, int age) {
+    public User(String email, String password, String name, int age) {
         this.email = email;
+        this.password = password;
         this.name = name;
         this.age = age;
     }
@@ -59,6 +63,7 @@ public class User {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
                 ", age=" + age +
                 '}';
     }
@@ -95,6 +100,13 @@ public class User {
         this.age = age;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public boolean checkEmail() {
 
@@ -126,6 +138,13 @@ public class User {
     //TODO 길이제한
     public boolean checkName() {
         if (StringUtils.isEmpty(this.name))
+            return false;
+
+        return true;
+    }
+
+    public boolean checkPassword() {
+        if (StringUtils.isEmpty(this.password))
             return false;
 
         return true;

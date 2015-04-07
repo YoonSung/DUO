@@ -2,7 +2,6 @@ package tdd.duo.domain;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.util.StringUtils;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -17,7 +16,7 @@ public class UserTest {
 
     @Before
     public void setUp(){
-        testUser = new User("asdf@naver.com", "김우승", 30);
+        testUser = new User("asdf@naver.com", "asdf", "김우승", 30);
     }
 
     @Test
@@ -37,6 +36,14 @@ public class UserTest {
     }
 
     @Test
+    public void 유저패스워드_확인(){
+        assertTrue(testUser.checkPassword());
+
+        testUser.setPassword("");
+        assertFalse(testUser.checkPassword());
+    }
+
+    @Test
     public void 유저이름_확인() {
         assertTrue(testUser.checkName());
         testUser.setName("");
@@ -53,4 +60,5 @@ public class UserTest {
 
         assertFalse(testUser.checkAge());
     }
+
 }
