@@ -10,9 +10,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import tdd.duo.config.DBConfig;
 import tdd.duo.config.WebConfig;
+import tdd.duo.domain.Article;
+import tdd.duo.domain.User;
 import tdd.duo.service.ArticleService;
 import tdd.duo.web.MvcTestUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -71,5 +77,34 @@ public class BoardControllerTest {
         )
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/board/list"));
+    }
+
+    @Test
+    public void getArticlesFromQueryString() throws Exception {
+
+        //GIVEN
+        String queryString = "test";
+        int expectedResultSize = 10;
+
+        String testTitle = "testTitle";
+        String testContent = "testContent";
+        List<Article> querySelectedArticles = new ArrayList<Article>();
+
+        for (int i = 1 ; i < expectedResultSize ; ++i) {
+            Article article = new Article(new User(), testTitle+i, testContent+i);
+            querySelectedArticles.add(article);
+        }
+
+        when(articleService.findsByQueryString(queryString)).thenReturn(querySelectedArticles);
+
+        //WHEN
+        mockMvc.perform(get("/board/query")
+                .param("query", queryString)
+        )
+        //THEN
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX+"/board/list"+WebConfig.RESOLVER_SUFFIX))
+                .andExpect(model().attributeExists("articles"))
+                .andExpect(model().size(expectedResultSize));
     }
 }

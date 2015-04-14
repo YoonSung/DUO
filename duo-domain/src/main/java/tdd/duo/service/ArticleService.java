@@ -6,6 +6,8 @@ import tdd.duo.domain.Article;
 import tdd.duo.exception.ArticleCreationException;
 import tdd.duo.repository.ArticleRepository;
 
+import java.util.List;
+
 /**
  * Created by yoon on 15. 4. 14..
  */
@@ -37,5 +39,9 @@ public class ArticleService {
             articleRepository.save(article);
         else
             throw new ArticleCreationException(VALIDATION_EXCEPTION_MESSAGE);
+    }
+
+    public List<Article> findsByQueryString(String query) {
+        return null;
     }
 }
