@@ -5,14 +5,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import tdd.duo.config.DBConfig;
 import tdd.duo.config.WebConfig;
 import tdd.duo.domain.Article;
 import tdd.duo.domain.User;
+import tdd.duo.exception.ArticleModificationException;
 import tdd.duo.service.ArticleService;
 import tdd.duo.web.MvcTestUtil;
 
@@ -22,9 +25,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -58,7 +59,6 @@ public class ArticleControllerTest {
                 .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX));
     }
 
-    //TODO 잘못된 요청에 대한 테스트만들기
     @Test
     public void creationViewRequest() throws Exception {
 
@@ -82,6 +82,30 @@ public class ArticleControllerTest {
         )
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/article/list"));
+    }
+
+    @Test
+    public void createNewArticleWithWrongData() throws Exception {
+        String title = "";
+        String content = "";
+
+        String expectedUrl = "/article/register";
+
+        Mockito.doCallRealMethod().when(articleService).create(any());
+
+        MvcResult mvcResult = mockMvc.perform(post("/article")
+                        .param("title", title)
+                        .param("content", content)
+        )
+                .andExpect(status().isOk())
+                .andExpect(view().name(expectedUrl))
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX))
+                .andExpect(model().attributeExists("article"))
+                .andExpect(model().size(2)).andReturn();
+
+        String errorMessage = (String) mvcResult.getModelAndView().getModel().get("errorMessage");
+
+        assertEquals(errorMessage, ArticleService.VALIDATION_EXCEPTION_MESSAGE);
     }
 
     @Test
@@ -135,6 +159,32 @@ public class ArticleControllerTest {
                         .param("content", testContent)
         )
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/article/"+requestArticle.getId()));
+                .andExpect(redirectedUrl("/article/" + requestArticle.getId()));
+    }
+
+    @Test
+    public void modifyArticleWithWrongData() throws Exception {
+
+        //GIVEN
+        String testTitle = "";
+        String testContent = "";
+        int articleId = 1;
+
+        when(articleService.modify(any())).thenThrow(new ArticleModificationException(ArticleService.VALIDATION_EXCEPTION_MESSAGE));
+
+        String expectedUrl = "/article/register";
+        //WHEN, THEN
+        MvcResult mvcResult = mockMvc.perform(put("/article/" + articleId)
+                        .param("title", testTitle)
+                        .param("content", testContent)
+        )
+                .andExpect(status().isOk())
+                .andExpect(view().name(expectedUrl))
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX))
+                .andExpect(model().size(2))
+                .andExpect(model().attributeExists("article", "errorMessage")).andReturn();
+
+        String errorMessage = (String) mvcResult.getModelAndView().getModel().get("errorMessage");
+        assertEquals(errorMessage, ArticleService.VALIDATION_EXCEPTION_MESSAGE);
     }
 }

@@ -49,11 +49,9 @@ public class ArticleController {
         try {
             articleService.create(article);
         } catch (ArticleCreationException exception) {
-            //TODO Refactoring to key-value parameter
-            model.addAttribute(article.getTitle());
-            model.addAttribute(article.getContent());
-            model.addAttribute(exception.getMessage());
-            return "/article/form";
+            model.addAttribute("article", article);
+            model.addAttribute("errorMessage", exception.getMessage());
+            return "/article/register";
         }
 
         return "redirect:/article/list";
@@ -69,9 +67,10 @@ public class ArticleController {
             return "redirect:/article/"+modifiedArticle.getId();
 
         } catch (ArticleModificationException e) {
+            model.addAttribute("article", article);
             model.addAttribute("errorMessage", e.getMessage());
         }
 
-        return "redirect:/article/"+article.getId();
+        return "/article/register";
     }
 }
