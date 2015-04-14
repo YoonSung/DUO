@@ -187,4 +187,15 @@ public class ArticleControllerTest {
         String errorMessage = (String) mvcResult.getModelAndView().getModel().get("errorMessage");
         assertEquals(errorMessage, ArticleService.VALIDATION_EXCEPTION_MESSAGE);
     }
+
+    @Test
+    public void deleteArticle() throws Exception {
+
+        int articleId = 1;
+        Mockito.doCallRealMethod().when(articleService).delete(1);
+
+        mockMvc.perform(delete("/article"+articleId))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/article"));
+    }
 }

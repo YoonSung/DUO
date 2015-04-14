@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tdd.duo.domain.Article;
 import tdd.duo.exception.ArticleCreationException;
+import tdd.duo.exception.ArticleDeletionException;
 import tdd.duo.exception.ArticleModificationException;
 import tdd.duo.service.ArticleService;
 
+import javax.naming.AuthenticationException;
 import java.util.List;
 
 /**
@@ -72,5 +74,19 @@ public class ArticleController {
         }
 
         return "/article/register";
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public String delete(@PathVariable Long id) {
+
+        try {
+            articleService.delete(id);
+
+        //TODO ArticleNotFoundException을 만들어서 이전의 에러처리도 리팩토링하자
+        } catch (AuthenticationException e) {
+            return "redirect:/article/"+id;
+        }
+
+        return "redirect:/article";
     }
 }

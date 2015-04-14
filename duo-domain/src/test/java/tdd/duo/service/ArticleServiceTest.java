@@ -12,9 +12,13 @@ import tdd.duo.config.DBConfig;
 import tdd.duo.domain.Article;
 import tdd.duo.domain.User;
 import tdd.duo.exception.ArticleCreationException;
+import tdd.duo.exception.ArticleDeletionException;
 import tdd.duo.exception.ArticleModificationException;
 import tdd.duo.repository.ArticleRepository;
 
+import javax.naming.AuthenticationException;
+
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -107,5 +111,23 @@ public class ArticleServiceTest {
         // THEN
         thrown.expect(ArticleCreationException.class);
         thrown.expectMessage(ArticleService.VALIDATION_EXCEPTION_MESSAGE);
+    }
+
+    @Test(expected = AuthenticationException.class)
+    public void 잘못된_사용자가_글삭제를_요청() {
+        //GIVEN
+
+        Long articleId = 1L;
+        User requestUser = new User();
+        requestUser.setId(1L);
+
+        User author = new User();
+        author.setId(2L);
+
+        when(sessionService.getCurrentUser()).thenReturn(requestUser);
+        when(articleRepository.findOne(articleId)).thenReturn(new Article(author, "testTitle", "testContent"));
+
+        //WHEN, THEN
+        articleService.delete(articleId);
     }
 }

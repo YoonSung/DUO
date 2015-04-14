@@ -74,4 +74,8 @@ public class ArticleService {
 
         return modifiedArticle;
     }
+
+    public void delete(Long articleId) {
+
+    }
 }
