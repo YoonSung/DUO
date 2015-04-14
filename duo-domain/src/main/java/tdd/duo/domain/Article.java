@@ -47,10 +47,25 @@ public class Article {
     }
 
     public boolean isRegisterable() {
-        if (isValidAuthor() == true && isValidTitle() == true && isValidContent() == true)
+        if (isValidId() && isValidAuthor() == true && isValidTitle() == true && isValidContent() == true)
             return true;
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", author=" + author +
+                ", createdTime=" + createdTime +
+                '}';
+    }
+
+    private boolean isValidId() {
+        return this.id >= 0 ? true : false;
     }
 
     private boolean isValidContent() {

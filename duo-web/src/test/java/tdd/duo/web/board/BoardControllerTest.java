@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -124,15 +125,15 @@ public class BoardControllerTest {
         String testTitle = "testTitle";
         String testContent = "testContent";
 
-        Article requestArticle = new Article(new User(), testTitle, testContent);
-        requestArticle.setId(1L);
+        Article requestArticle = new Article(null, testTitle, testContent);
+        requestArticle.setId(1);
 
-        when(articleService.modify(requestArticle)).thenReturn(requestArticle);
+        when(articleService.modify(any())).thenReturn(requestArticle);
 
         //WHEN, THEN
-        mockMvc.perform(put("/board")
+        mockMvc.perform(put("/board/"+requestArticle.getId())
                         .param("title", testTitle)
-                        .param("testContent", testContent)
+                        .param("content", testContent)
         )
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/board/article/"+requestArticle.getId()));

@@ -77,6 +77,10 @@ public class ArticleService {
             throw new ArticleModificationException(INVALID_REQUEST_EXCEPTION_MESSAGE);
         }
 
-        return articleRepository.save(requestArticle);
+        Article modifiedArticle = articleRepository.save(requestArticle);
+        if (modifiedArticle == null)
+            throw new ArticleModificationException("예기치못한 에러발생");
+
+        return modifiedArticle;
     }
 }
