@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tdd.duo.domain.Article;
 import tdd.duo.exception.ArticleCreationException;
-import tdd.duo.exception.ArticleDeletionException;
 import tdd.duo.exception.ArticleModificationException;
+import tdd.duo.exception.ArticleNotFoundException;
 import tdd.duo.service.ArticleService;
 
 import javax.naming.AuthenticationException;
@@ -82,9 +82,11 @@ public class ArticleController {
         try {
             articleService.delete(id);
 
-        //TODO ArticleNotFoundException을 만들어서 이전의 에러처리도 리팩토링하자
+        //TODO ArticleNotFoundException를 통해 이전의 다른 컨트롤러 에러처리도 리팩토링하자
         } catch (AuthenticationException e) {
             return "redirect:/article/"+id;
+        } catch (ArticleNotFoundException e) {
+            return "redirect:/article";
         }
 
         return "redirect:/article";

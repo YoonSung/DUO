@@ -15,7 +15,9 @@ import tdd.duo.config.DBConfig;
 import tdd.duo.config.WebConfig;
 import tdd.duo.domain.Article;
 import tdd.duo.domain.User;
+import tdd.duo.exception.ArticleCreationException;
 import tdd.duo.exception.ArticleModificationException;
+import tdd.duo.exception.ArticleNotFoundException;
 import tdd.duo.service.ArticleService;
 import tdd.duo.web.MvcTestUtil;
 
@@ -91,7 +93,7 @@ public class ArticleControllerTest {
 
         String expectedUrl = "/article/register";
 
-        Mockito.doCallRealMethod().when(articleService).create(any());
+        Mockito.doThrow(new ArticleCreationException(ArticleService.VALIDATION_EXCEPTION_MESSAGE)).when(articleService).create(any());
 
         MvcResult mvcResult = mockMvc.perform(post("/article")
                         .param("title", title)
@@ -140,7 +142,6 @@ public class ArticleControllerTest {
         assertEquals(querySelectedArticles, returnArticles);
     }
 
-    //TODO 잘못된 요청에 대한 테스트작성
     @Test
     public void modifyArticle() throws Exception {
 
@@ -191,10 +192,30 @@ public class ArticleControllerTest {
     @Test
     public void deleteArticle() throws Exception {
 
-        int articleId = 1;
-        Mockito.doCallRealMethod().when(articleService).delete(1);
+        Long articleId = 1L;
 
-        mockMvc.perform(delete("/article"+articleId))
+        mockMvc.perform(delete("/article/"+articleId))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/article"));
+    }
+
+    @Test
+    public void deleteArticleWithWrongArticleNumber() throws Exception {
+
+        int articleId = -1;
+        mockMvc.perform(delete("/article/"+articleId))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/article"));
+    }
+
+    @Test
+    public void deleteArticleWithDidNotExistArticle() throws Exception {
+
+        Long articleId = 1L;
+
+        Mockito.doThrow(new ArticleNotFoundException()).when(articleService).delete(articleId);
+
+        mockMvc.perform(delete("/article/"+articleId))
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/article"));
     }

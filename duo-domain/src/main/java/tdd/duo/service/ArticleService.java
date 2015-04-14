@@ -7,8 +7,10 @@ import tdd.duo.domain.Article;
 import tdd.duo.domain.User;
 import tdd.duo.exception.ArticleCreationException;
 import tdd.duo.exception.ArticleModificationException;
+import tdd.duo.exception.ArticleNotFoundException;
 import tdd.duo.repository.ArticleRepository;
 
+import javax.naming.AuthenticationException;
 import java.util.List;
 
 /**
@@ -75,7 +77,22 @@ public class ArticleService {
         return modifiedArticle;
     }
 
-    public void delete(Long articleId) {
+    //TODO authenticationException을 DuoAuthenticationException으로 바꾸고, 다른곳에도 적용
+    //TODO 실제 현업에서는 글을 삭제하지 않는다. 글 상태값을 변경하는 형태로 리팩토링 하자
+    public void delete(Long articleId) throws ArticleNotFoundException, AuthenticationException {
 
+        if (articleId == null || articleId <= 0)
+            throw new ArticleNotFoundException();
+
+        Article article = articleRepository.findOne(articleId);
+        if (article == null || article.getAuthor() == null)
+            throw new ArticleNotFoundException();
+
+        User currentUser = sessionService.getCurrentUser();
+        User author = article.getAuthor();
+        if (currentUser.getId() != author.getId())
+            throw new AuthenticationException();
+
+        articleRepository.delete(article);
     }
 }

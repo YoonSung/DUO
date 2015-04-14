@@ -6,19 +6,19 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
 import tdd.duo.config.DBConfig;
 import tdd.duo.domain.Article;
 import tdd.duo.domain.User;
 import tdd.duo.exception.ArticleCreationException;
-import tdd.duo.exception.ArticleDeletionException;
 import tdd.duo.exception.ArticleModificationException;
+import tdd.duo.exception.ArticleNotFoundException;
 import tdd.duo.repository.ArticleRepository;
 
 import javax.naming.AuthenticationException;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -45,7 +45,7 @@ public class ArticleServiceTest {
 
         // GIVEN
         Article article = new Article(new User(), "", "");
-        ArticleService articleService = new ArticleService();
+        when(sessionService.getCurrentUser()).thenReturn(new User());
 
         // WHEN
         articleService.create(article);
@@ -114,9 +114,8 @@ public class ArticleServiceTest {
     }
 
     @Test(expected = AuthenticationException.class)
-    public void 잘못된_사용자가_글삭제를_요청() {
+    public void 잘못된_사용자가_글삭제를_요청() throws ArticleNotFoundException, AuthenticationException {
         //GIVEN
-
         Long articleId = 1L;
         User requestUser = new User();
         requestUser.setId(1L);
@@ -128,6 +127,20 @@ public class ArticleServiceTest {
         when(articleRepository.findOne(articleId)).thenReturn(new Article(author, "testTitle", "testContent"));
 
         //WHEN, THEN
+        articleService.delete(articleId);
+    }
+
+    @Test(expected = ArticleNotFoundException.class)
+    public void 잘못된_글번호로_삭제를_요청() throws ArticleNotFoundException, AuthenticationException {
+        Long articleId = -1L;
+        articleService.delete(articleId);
+    }
+
+    @Test(expected = ArticleNotFoundException.class)
+    public void 존재하지_않는_글에_대한_삭제를_요청() throws ArticleNotFoundException, AuthenticationException {
+        Long articleId = 1L;
+
+        when(articleRepository.findOne(articleId)).thenReturn(null);
         articleService.delete(articleId);
     }
 }
