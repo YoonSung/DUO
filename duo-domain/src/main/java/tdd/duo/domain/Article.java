@@ -65,7 +65,10 @@ public class Article {
     }
 
     private boolean isValidId() {
-        return this.id >= 0 ? true : false;
+        if (this.id == null)
+            return false;
+
+        return this.id > 0 ? true : false;
     }
 
     private boolean isValidContent() {

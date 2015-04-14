@@ -1,4 +1,4 @@
-package tdd.duo.web.board;
+package tdd.duo.web.article;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import tdd.duo.config.DBConfig;
 import tdd.duo.config.WebConfig;
@@ -33,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = {DBConfig.class})
-public class BoardControllerTest {
+public class ArticleControllerTest {
 
     private MockMvc mockMvc;
 
@@ -41,19 +40,19 @@ public class BoardControllerTest {
     private ArticleService articleService;
 
     @InjectMocks
-    private BoardController boardController;
+    private ArticleController articleController;
 
     @Before
     public void setUp() {
-        this.mockMvc = MvcTestUtil.getMockMvc(boardController);
+        this.mockMvc = MvcTestUtil.getMockMvc(articleController);
     }
 
     @Test
     public void listViewRequest() throws Exception {
 
-        String expectedUrl = "/board/list";
+        String expectedUrl = "/article/list";
 
-        mockMvc.perform(get("/board"))
+        mockMvc.perform(get("/article"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(expectedUrl))
                 .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX));
@@ -63,9 +62,9 @@ public class BoardControllerTest {
     @Test
     public void creationViewRequest() throws Exception {
 
-        String expectedUrl = "/board/register";
+        String expectedUrl = "/article/register";
 
-        mockMvc.perform(get("/board/register"))
+        mockMvc.perform(get("/article/register"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(expectedUrl))
                 .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX));
@@ -77,12 +76,12 @@ public class BoardControllerTest {
         String title = "TITLE";
         String content = "CONTENT";
 
-        mockMvc.perform(post("/board")
+        mockMvc.perform(post("/article")
                         .param("title", title)
                         .param("content", content)
         )
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/board/list"));
+                .andExpect(redirectedUrl("/article/list"));
     }
 
     @Test
@@ -104,12 +103,12 @@ public class BoardControllerTest {
         when(articleService.findsByQueryString(queryString)).thenReturn(querySelectedArticles);
 
         //WHEN
-        ResultActions resultActions = mockMvc.perform(get("/board/query")
+        ResultActions resultActions = mockMvc.perform(get("/article/query")
                         .param("query", queryString)
         )
         //THEN
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + "/board/list" + WebConfig.RESOLVER_SUFFIX))
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + "/article/list" + WebConfig.RESOLVER_SUFFIX))
                 .andExpect(model().attributeExists("articles"));
 
 
@@ -131,11 +130,11 @@ public class BoardControllerTest {
         when(articleService.modify(any())).thenReturn(requestArticle);
 
         //WHEN, THEN
-        mockMvc.perform(put("/board/"+requestArticle.getId())
+        mockMvc.perform(put("/article/"+requestArticle.getId())
                         .param("title", testTitle)
                         .param("content", testContent)
         )
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/board/article/"+requestArticle.getId()));
+                .andExpect(redirectedUrl("/article/"+requestArticle.getId()));
     }
 }
