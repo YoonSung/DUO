@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -57,6 +58,7 @@ public class BoardControllerTest {
                 .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX));
     }
 
+    //TODO 잘못된 요청에 대한 테스트만들기
     @Test
     public void creationViewRequest() throws Exception {
 
@@ -75,8 +77,8 @@ public class BoardControllerTest {
         String content = "CONTENT";
 
         mockMvc.perform(post("/board")
-                .param("title", title)
-                .param("content", content)
+                        .param("title", title)
+                        .param("content", content)
         )
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/board/list"));
@@ -112,5 +114,27 @@ public class BoardControllerTest {
 
         List<Article> returnArticles = (List<Article>) resultActions.andReturn().getModelAndView().getModel().get("articles");
         assertEquals(querySelectedArticles, returnArticles);
+    }
+
+    //TODO 잘못된 요청에 대한 테스트작성
+    @Test
+    public void modifyArticle() throws Exception {
+
+        //GIVEN
+        String testTitle = "testTitle";
+        String testContent = "testContent";
+
+        Article requestArticle = new Article(new User(), testTitle, testContent);
+        requestArticle.setId(1L);
+
+        when(articleService.modify(requestArticle)).thenReturn(requestArticle);
+
+        //WHEN, THEN
+        mockMvc.perform(put("/board")
+                        .param("title", testTitle)
+                        .param("testContent", testContent)
+        )
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/board/article/"+requestArticle.getId()));
     }
 }

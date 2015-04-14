@@ -1,12 +1,16 @@
 package tdd.duo.service;
 
+import org.h2.engine.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tdd.duo.domain.Article;
+import tdd.duo.domain.User;
 import tdd.duo.exception.ArticleCreationException;
+import tdd.duo.exception.ArticleModificationException;
 import tdd.duo.repository.ArticleRepository;
 
+import java.net.UnknownServiceException;
 import java.util.List;
 
 /**
@@ -48,5 +52,30 @@ public class ArticleService {
             return null;
 
         return articleRepository.findsByQueryStringFromTitleAndContent(query);
+    }
+
+    public Article modify(Article requestArticle) throws ArticleModificationException {
+
+        User user = sessionService.getCurrentUser();
+        requestArticle.setAuthor(user);
+
+        //수정요청 데이터의 정합성 확인
+        if (!requestArticle.isRegisterable()) {
+            throw new ArticleModificationException(VALIDATION_EXCEPTION_MESSAGE);
+        }
+
+        Article article = articleRepository.findOne(requestArticle.getId());
+
+        //수정요청에 해당하는 기존의 article이 있는지 확인
+        if (article == null) {
+            throw new ArticleModificationException("잘못된 요청입니다");
+        }
+
+        //기존의 article author와 현재로그인한 user가 같은지 확인
+        if (article.getAuthor().getId() != user.getId()) {
+            throw new ArticleModificationException("잘못된 요청입니다");
+        }
+
+        return articleRepository.save(requestArticle);
     }
 }

@@ -14,6 +14,7 @@ import tdd.duo.config.DBConfig;
 import tdd.duo.domain.Article;
 import tdd.duo.domain.User;
 import tdd.duo.exception.ArticleCreationException;
+import tdd.duo.exception.ArticleModificationException;
 
 import static org.mockito.Mockito.when;
 
@@ -50,4 +51,17 @@ public class ArticleServiceTest {
     //@Test(expected = ArticleCreationException.class)
     //public void 로그인_하지_않은_유저가_새로운글을_등록하려할때() throws ArticleCreationException {
     //}
+
+    //수정요청
+    @Test(expected = ArticleModificationException.class)
+    public void 잘못된_사용자가_글수정을_요청() {
+    }
+
+    @Test(expected = ArticleModificationException.class)
+    public void 존재하지않는_글을_수정해달라고_요청() {
+    }
+
+    @Test(expected = ArticleModificationException.class)
+    public void 잘못된데이터로_글수정을_요청() {
+    }
 }
