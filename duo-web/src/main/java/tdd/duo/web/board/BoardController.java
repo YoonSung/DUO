@@ -1,5 +1,6 @@
 package tdd.duo.web.board;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import sun.plugin2.main.client.MacOSXMozillaServiceDelegate;
 import tdd.duo.domain.Article;
+import tdd.duo.exception.ArticleCreationException;
+import tdd.duo.service.ArticleService;
 
 /**
  * Created by yoon on 15. 4. 14..
@@ -15,6 +18,7 @@ import tdd.duo.domain.Article;
 @RequestMapping("/board")
 public class BoardController {
 
+    @Autowired
     private ArticleService articleService;
 
     @RequestMapping("")

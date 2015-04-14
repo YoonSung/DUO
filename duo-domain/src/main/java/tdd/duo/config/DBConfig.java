@@ -4,6 +4,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -23,6 +24,7 @@ import java.util.Properties;
 @PropertySource("classpath:/db.properties")
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {"tdd.duo.repository"})
+@ComponentScan(basePackages = {"tdd.duo.service"})
 public class DBConfig {
 
     public final String SCANNED_PACKED_NAME = "tdd.duo.domain";
