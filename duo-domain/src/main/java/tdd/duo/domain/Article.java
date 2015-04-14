@@ -30,6 +30,8 @@ public class Article {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
 
+    public Article() {}
+
     public Article(User author, String title, String content) {
         this.author = author;
         this.title = title;
@@ -80,4 +82,6 @@ public class Article {
     public void setContent(String content) {
         this.content = content;
     }
+
+
 }

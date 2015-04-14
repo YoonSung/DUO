@@ -3,11 +3,14 @@ package tdd.duo.web.board;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import tdd.duo.config.DBConfig;
 import tdd.duo.config.WebConfig;
+import tdd.duo.service.ArticleService;
 import tdd.duo.web.MvcTestUtil;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,9 +26,15 @@ public class BoardControllerTest {
 
     private MockMvc mockMvc;
 
+    @Mock
+    private ArticleService articleService;
+
+    @InjectMocks
+    private BoardController boardController;
+
     @Before
     public void setUp() {
-        this.mockMvc = MvcTestUtil.getMockMvc(new BoardController());
+        this.mockMvc = MvcTestUtil.getMockMvc(boardController);
     }
 
     @Test
