@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tdd.duo.config.AppConfig;
 import tdd.duo.config.WebConfig;
 
@@ -24,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import tdd.duo.domain.User;
 import tdd.duo.repository.UserRepository;
+import tdd.duo.web.user.UserController;
 
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = {AppConfig.class})
