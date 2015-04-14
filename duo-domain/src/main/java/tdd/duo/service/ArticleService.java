@@ -2,6 +2,7 @@ package tdd.duo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import tdd.duo.domain.Article;
 import tdd.duo.exception.ArticleCreationException;
 import tdd.duo.repository.ArticleRepository;
@@ -42,6 +43,10 @@ public class ArticleService {
     }
 
     public List<Article> findsByQueryString(String query) {
-        return null;
+
+        if (StringUtils.isEmpty(query))
+            return null;
+
+        return articleRepository.findsByQueryStringFromTitleAndContent(query);
     }
 }

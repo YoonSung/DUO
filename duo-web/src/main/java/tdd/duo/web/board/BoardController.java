@@ -9,6 +9,8 @@ import tdd.duo.domain.Article;
 import tdd.duo.exception.ArticleCreationException;
 import tdd.duo.service.ArticleService;
 
+import java.util.List;
+
 /**
  * Created by yoon on 15. 4. 14..
  */
@@ -19,8 +21,18 @@ public class BoardController {
     @Autowired
     private ArticleService articleService;
 
+    //TODO Add model data(articles), Refactoring with listFromQuery
     @RequestMapping("")
     public String list() {
+        return "/board/list";
+    }
+
+    @RequestMapping("/query")
+    public String listFromQuery(String query, Model model) {
+
+        List<Article> articles = articleService.findsByQueryString(query);
+        model.addAttribute("articles", articles);
+
         return "/board/list";
     }
 
@@ -43,5 +55,4 @@ public class BoardController {
 
         return "redirect:/board/list";
     }
-
 }
