@@ -15,6 +15,7 @@ import tdd.duo.domain.Article;
 import tdd.duo.domain.User;
 import tdd.duo.exception.ArticleCreationException;
 import tdd.duo.exception.ArticleModificationException;
+import tdd.duo.repository.ArticleRepository;
 
 import static org.mockito.Mockito.when;
 
@@ -30,6 +31,12 @@ public class ArticleServiceTest {
     public ExpectedException thrown= ExpectedException.none();
 
     @Mock
+    private ArticleRepository articleRepository;
+
+    @Mock
+    private SessionService sessionService;
+
+    @InjectMocks
     private ArticleService articleService;
 
     @Test(expected = ArticleCreationException.class)
@@ -37,7 +44,7 @@ public class ArticleServiceTest {
 
         // GIVEN
         Article article = new Article(new User(), "", "");
-        Mockito.doCallRealMethod().when(articleService).create(article);
+        ArticleService articleService = new ArticleService();
 
         // WHEN
         articleService.create(article);
@@ -52,16 +59,62 @@ public class ArticleServiceTest {
     //public void 로그인_하지_않은_유저가_새로운글을_등록하려할때() throws ArticleCreationException {
     //}
 
-    //수정요청
+
     @Test(expected = ArticleModificationException.class)
-    public void 잘못된_사용자가_글수정을_요청() {
+    public void 잘못된_사용자가_글수정을_요청() throws ArticleModificationException {
+
+        //GIVEN
+        User modifyRequestArticleAuthor = new User();
+        modifyRequestArticleAuthor.setId(1L);
+        Article modifyRequestArticle = new Article(modifyRequestArticleAuthor, "testestTitle", "testestContent");
+
+        User currentUser = new User();
+        currentUser.setId(2L);
+        when(sessionService.getCurrentUser()).thenReturn(currentUser);
+
+        //WHEN
+        articleService.modify(modifyRequestArticle);
+
+        // THEN
+        thrown.expect(ArticleCreationException.class);
+        thrown.expectMessage(ArticleService.INVALID_REQUEST_EXCEPTION_MESSAGE);
     }
 
     @Test(expected = ArticleModificationException.class)
-    public void 존재하지않는_글을_수정해달라고_요청() {
+    public void 존재하지않는_글을_수정해달라고_요청() throws ArticleModificationException {
+        //GIVEN
+        User modifyRequestArticleAuthor = new User();
+        modifyRequestArticleAuthor.setId(1L);
+        Article modifyRequestArticle = new Article(modifyRequestArticleAuthor, "testestTitle", "testestContent");
+        modifyRequestArticle.setId(1L);
+
+        when(articleRepository.findOne(modifyRequestArticle.getId())).thenReturn(null);
+
+        //WHEN
+        articleService.modify(modifyRequestArticle);
+
+        // THEN
+        thrown.expect(ArticleCreationException.class);
+        thrown.expectMessage(ArticleService.INVALID_REQUEST_EXCEPTION_MESSAGE);
     }
 
     @Test(expected = ArticleModificationException.class)
-    public void 잘못된데이터로_글수정을_요청() {
+    public void 잘못된데이터로_글수정을_요청() throws ArticleModificationException {
+        //GIVEN
+        User modifyRequestArticleAuthor = new User();
+        modifyRequestArticleAuthor.setId(1L);
+        Article modifyRequestArticle = new Article(modifyRequestArticleAuthor, null, "");
+        modifyRequestArticle.setId(1L);
+        modifyRequestArticle.setAuthor(modifyRequestArticleAuthor);
+
+        when(articleRepository.findOne(modifyRequestArticle.getId())).thenReturn(modifyRequestArticle);
+        when(sessionService.getCurrentUser()).thenReturn(modifyRequestArticleAuthor);
+
+        //WHEN
+        articleService.modify(modifyRequestArticle);
+
+        // THEN
+        thrown.expect(ArticleCreationException.class);
+        thrown.expectMessage(ArticleService.VALIDATION_EXCEPTION_MESSAGE);
     }
 }

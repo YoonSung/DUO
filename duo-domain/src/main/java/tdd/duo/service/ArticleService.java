@@ -21,6 +21,7 @@ public class ArticleService {
 
     public static final String VALIDATION_EXCEPTION_MESSAGE = "입력데이터를 다시확인해 주시기 바랍니다.";
     public static final String LOGINUSER_EXCEPTION_MESSAGE = "로그인하지 않은 유저의 새글등록 요청";
+    public static final String INVALID_REQUEST_EXCEPTION_MESSAGE = "잘못된 요청입니다";
 
     @Autowired
     private ArticleRepository articleRepository;
@@ -68,12 +69,12 @@ public class ArticleService {
 
         //수정요청에 해당하는 기존의 article이 있는지 확인
         if (article == null) {
-            throw new ArticleModificationException("잘못된 요청입니다");
+            throw new ArticleModificationException(INVALID_REQUEST_EXCEPTION_MESSAGE);
         }
 
         //기존의 article author와 현재로그인한 user가 같은지 확인
         if (article.getAuthor().getId() != user.getId()) {
-            throw new ArticleModificationException("잘못된 요청입니다");
+            throw new ArticleModificationException(INVALID_REQUEST_EXCEPTION_MESSAGE);
         }
 
         return articleRepository.save(requestArticle);
