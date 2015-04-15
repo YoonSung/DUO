@@ -1,0 +1,17 @@
+ol.board {
+    display: table;
+    color: #999;
+    border-bottom: 1px solid #e5e5e5;
+    margin-top: 10px;
+    list-style-type: none;
+    width: 40px;
+}
+
+li {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    color: #999;
+    border: 1px solid #e5e5e5;
+    padding: 0.3em;
+}

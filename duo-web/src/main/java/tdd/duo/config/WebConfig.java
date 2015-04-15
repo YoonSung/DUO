@@ -5,6 +5,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.view.InternalResourceView;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -13,7 +15,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  */
 @Configuration
 @ComponentScan(basePackages = {"tdd.duo.web"})
-public class WebConfig {
+public class WebConfig extends WebMvcConfigurationSupport {
 
     public static final String RESOLVER_PREFIX = "/WEB-INF/view";
     public static final String RESOLVER_SUFFIX = ".jsp";
@@ -25,5 +27,11 @@ public class WebConfig {
         resolver.setSuffix(RESOLVER_SUFFIX);
 
         return resolver;
+    }
+
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/stylesheet/*").addResourceLocations("/stylesheet/");
+        super.addResourceHandlers(registry);
     }
 }

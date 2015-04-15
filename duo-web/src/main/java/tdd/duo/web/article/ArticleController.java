@@ -27,7 +27,10 @@ public class ArticleController {
 
     //TODO Add model data(articles), Refactoring with listFromQuery
     @RequestMapping("")
-    public String list() {
+    public String list(Model model) {
+
+        List<Article> articles = articleService.findAll();
+        model.addAttribute("articles", articles);
         return "/article/list";
     }
 

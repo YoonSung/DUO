@@ -22,7 +22,7 @@ public class Article {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User author;
 

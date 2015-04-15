@@ -95,4 +95,9 @@ public class ArticleService {
 
         articleRepository.delete(article);
     }
+
+    public List<Article> findAll() {
+        //TODO Sorting
+        return articleRepository.findAll();
+    }
 }
