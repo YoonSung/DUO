@@ -13,4 +13,11 @@ public class MvcTestUtil {
         WebConfig webConfig = new WebConfig();
         return MockMvcBuilders.standaloneSetup(controller).setViewResolvers(webConfig.internalResourceViewResolver()).build();
     }
+
+    public static MockMvc getInterceptorMockMvc(Object controller) {
+        WebConfig webConfig = new WebConfig();
+        return MockMvcBuilders.standaloneSetup(controller)
+                .setViewResolvers(webConfig.internalResourceViewResolver())
+                .addInterceptors(webConfig.loginInterceptor()).build();
+    }
 }

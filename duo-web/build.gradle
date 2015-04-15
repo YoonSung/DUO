@@ -7,6 +7,7 @@ project.webAppDirName = 'webapp'
 
 dependencies {
     compile project(':duo-domain')
+    compile 'javax.servlet:javax.servlet-api:3.1.0'
     testCompile 'org.springframework:spring-test:4.1.6.RELEASE'
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 }

@@ -3,13 +3,17 @@ package tdd.duo.web;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tdd.duo.config.AppConfig;
 import tdd.duo.config.WebConfig;
+import tdd.duo.domain.User;
+import tdd.duo.repository.UserRepository;
 
-
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -17,13 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by kws on 15. 3. 31..
  */
-
-import static org.mockito.Mockito.when;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import tdd.duo.domain.User;
-import tdd.duo.repository.UserRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = {AppConfig.class})
