@@ -8,22 +8,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import tdd.duo.config.AppConfig;
 import tdd.duo.config.WebConfig;
 import tdd.duo.domain.User;
 import tdd.duo.domain.auth.Authentication;
+import tdd.duo.exception.AlreadyExistException;
 import tdd.duo.exception.PasswordMismatchException;
 import tdd.duo.service.UserService;
 import tdd.duo.web.MvcTestUtil;
 
-import javax.servlet.http.HttpSession;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -58,30 +53,33 @@ public class UserControllerTest {
 
     @Test
     public void userRegister() throws Exception {
+
+        when(userService.create(any())).thenReturn(null);
+
         mockMvc.perform(post("/user/register")
                 .param("email", "test@gmail.com")
+                .param("password", "testPassword")
                 .param("name", "김우승")
                 .param("age", "31"))
 
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl("/user/login"));
     }
 
     @Test
     public void userRegisterWithAlreadyExistion() throws Exception {
 
         String testEmail = "test@gmail.com";
-        String testPassword = "asdf";
+        String testPassword = "testPassword";
         String testName = "김우승";
         int testAge = 31;
 
-        User testUser = new User(testEmail, testPassword, testName, testAge);
-
-        when(userService.findByEmail(testEmail)).thenReturn(testUser);
+        when(userService.create(any(User.class))).thenThrow(AlreadyExistException.class);
 
 
         mockMvc.perform(post("/user/register")
                 .param("email", testEmail)
+                .param("password", testPassword)
                 .param("name", testName)
                 .param("age", "" + testAge))
 
@@ -94,17 +92,15 @@ public class UserControllerTest {
     @Test
     public void userRegisterWithInvalidParameter() throws Exception {
         String testEmail = "";
-        String testPassword = "asdf";
+        String testPassword = "testPassword";
         String testName = "김우승";
         int testAge = 31;
 
-        User testUser = new User(testEmail, testPassword, testName, testAge);
-
-        when(userService.findByEmail(testEmail)).thenReturn(testUser);
-
+        when(userService.create(any(User.class))).thenThrow(AlreadyExistException.class);
 
         mockMvc.perform(post("/user/register")
                 .param("email", testEmail)
+                .param("password", testPassword)
                 .param("name", testName)
                 .param("age", "" + testAge))
 

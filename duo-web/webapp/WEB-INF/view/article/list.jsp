@@ -12,6 +12,7 @@
     <title>DUO - Article</title>
     <link rel="stylesheet" href="/stylesheet/list.css"/>
     <link rel="stylesheet" href="/stylesheet/reset.css"/>
+    <link rel="stylesheet" href="/stylesheet/common.css"/>
 </head>
 <body>
 <h1>Board List</h1>

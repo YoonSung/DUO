@@ -1,6 +1,5 @@
 package tdd.duo.domain.auth;
 
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import tdd.duo.domain.User;
 
