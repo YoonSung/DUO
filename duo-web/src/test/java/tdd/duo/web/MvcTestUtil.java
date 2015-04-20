@@ -2,6 +2,7 @@ package tdd.duo.web;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import tdd.duo.config.WebConfig;
 
@@ -10,15 +11,13 @@ import tdd.duo.config.WebConfig;
  */
 public class MvcTestUtil {
 
+    static WebConfig webConfig = new WebConfig();
+
     public static MockMvc getMockMvc(Object controller) {
-        WebConfig webConfig = new WebConfig();
-        return MockMvcBuilders.standaloneSetup(controller).setViewResolvers(webConfig.internalResourceViewResolver()).addFilter(new HiddenHttpMethodFilter()).build();
+        return getStandAloneMockMvcWithConfigurationSetting(controller).build();
     }
 
-    public static MockMvc getInterceptorMockMvc(Object controller) {
-        WebConfig webConfig = new WebConfig();
-        return MockMvcBuilders.standaloneSetup(controller)
-                .setViewResolvers(webConfig.internalResourceViewResolver())
-                .addInterceptors(webConfig.loginInterceptor()).build();
+    private static StandaloneMockMvcBuilder getStandAloneMockMvcWithConfigurationSetting(Object controller) {
+        return MockMvcBuilders.standaloneSetup(controller).setViewResolvers(webConfig.internalResourceViewResolver()).addFilter(new HiddenHttpMethodFilter());
     }
 }

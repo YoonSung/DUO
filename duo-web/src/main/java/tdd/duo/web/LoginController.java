@@ -19,11 +19,12 @@ public class LoginController {
     @Autowired
     UserRepository userRepository;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login")
     public String loginForm(){
         return "/login/loginForm";
     }
 
+    //TODO 암호화, validation Check
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(User user, HttpServletResponse response){
         User findUser = userRepository.findByEmail(user.getEmail());

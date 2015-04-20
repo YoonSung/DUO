@@ -1,30 +1,29 @@
 package tdd.duo.interceptor;
 
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.Optional;
+import javax.servlet.http.HttpSession;
 
-/**
- * Created by Administrator on 2015-04-15.
- */
+
 public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Optional<Cookie> op = Arrays.asList(request.getCookies())
-                .stream()
-                .filter(e -> e.getName().equals("_USER_SESSION_"))
-                .findFirst();
 
-        if (!op.isPresent())
+        //Authentication Check
+        if (WebUtils.getSessionAttribute(request, "id") == null ) {
             response.sendRedirect("/login");
+            return false;
+        }
 
-        return op.isPresent();
+        //TODO Authorization Check
+
+        return true;
     }
 
     @Override
