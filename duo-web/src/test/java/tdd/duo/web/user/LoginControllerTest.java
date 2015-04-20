@@ -1,4 +1,4 @@
-package tdd.duo.web;
+package tdd.duo.web.user;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import tdd.duo.config.AppConfig;
 import tdd.duo.domain.User;
 import tdd.duo.repository.UserRepository;
+import tdd.duo.web.MvcTestUtil;
+import tdd.duo.web.user.LoginController;
 
 import javax.servlet.http.Cookie;
 

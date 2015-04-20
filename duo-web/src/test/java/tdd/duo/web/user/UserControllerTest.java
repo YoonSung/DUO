@@ -1,4 +1,4 @@
-package tdd.duo.web;
+package tdd.duo.web.user;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +12,7 @@ import tdd.duo.config.AppConfig;
 import tdd.duo.config.WebConfig;
 import tdd.duo.domain.User;
 import tdd.duo.repository.UserRepository;
+import tdd.duo.web.MvcTestUtil;
 import tdd.duo.web.user.UserController;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -79,7 +80,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void 잘못된_유저() throws Exception{
+    public void userRegisterWithInvalidParameter() throws Exception{
         String testEmail = "";
         String testPassword = "asdf";
         String testName = "김우승";

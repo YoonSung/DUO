@@ -1,4 +1,4 @@
-package tdd.duo.web.user;
+package tdd.duo.web;
 
 import org.junit.Before;
 import org.junit.Test;
