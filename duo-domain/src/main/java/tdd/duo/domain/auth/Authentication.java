@@ -28,11 +28,11 @@ public class Authentication {
     }
 
     public boolean isMathchId(User user) {
-        return isMatch(user.getEmail(), this.id);
+        return user == null ? false : isMatch(user.getEmail(), this.id);
     }
 
     public boolean isMatchPassword(User user) {
-        return isMatch(user.getPassword(), this.password);
+        return user == null ? false : isMatch(user.getPassword(), this.password);
     }
 
     private boolean isMatch(String expected, String actual) {
