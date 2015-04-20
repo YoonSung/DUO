@@ -48,9 +48,4 @@ public class UserController {
         return "/user/register";
     }
 
-    @RequestMapping("/home")
-    public String homeForm(){
-        return "/user/home";
-    }
-
 }

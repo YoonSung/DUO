@@ -1,5 +1,6 @@
 package tdd.duo.web.user;
 
+import javassist.NotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,12 +9,14 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import tdd.duo.config.AppConfig;
 import tdd.duo.config.WebConfig;
 import tdd.duo.domain.User;
 import tdd.duo.repository.UserRepository;
 import tdd.duo.web.MvcTestUtil;
-import tdd.duo.web.user.UserController;
+
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -71,7 +74,7 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register")
                 .param("email", testEmail)
                 .param("name", testName)
-                .param("age", ""+testAge))
+                .param("age", "" + testAge))
 
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + "/user/register" + WebConfig.RESOLVER_SUFFIX))
@@ -80,7 +83,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void userRegisterWithInvalidParameter() throws Exception{
+    public void userRegisterWithInvalidParameter() throws Exception {
         String testEmail = "";
         String testPassword = "asdf";
         String testName = "김우승";
@@ -94,7 +97,7 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register")
                 .param("email", testEmail)
                 .param("name", testName)
-                .param("age", ""+testAge))
+                .param("age", "" + testAge))
 
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + "/user/register" + WebConfig.RESOLVER_SUFFIX))
@@ -102,4 +105,85 @@ public class UserControllerTest {
                 .andExpect(model().attributeExists("error"));
     }
 
+
+    // ------ Login Test
+
+    @Test
+    public void userLoginForm() throws Exception {
+
+        String expectedUrl = "/user/login";
+
+        mockMvc.perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(view().name(expectedUrl))
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX));
+    }
+
+    @Test
+    public void userLogin() throws Exception {
+
+        String email = "testEmail@test.com";
+        String password = "testPassword";
+
+        MvcResult result = mockMvc.perform(post("/user/login")
+                        .param("email", email)
+                        .param("password", password)
+        )
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/"))
+                .andReturn();
+
+        assertNotNull(result.getRequest().getSession().getAttribute("id"));
+    }
+
+    @Test
+    public void userLoginRequestWithInvalidParameter() throws Exception {
+        String email = "testEmail@test.com";
+        String password = "testPassword";
+
+        when(userService.login(email, password)).thenThrow(IllegalArgumentException.class);
+
+        mockMvc.perform(post("/user/login")
+                        .param("email", email)
+                        .param("password", password)
+        )
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/user/login"))
+                .andExpect(model().attributeExists("errorMessage"))
+                .andExpect(model().attribute("errorMessage", "잘못된 요청입니다"));
+    }
+
+    @Test
+    public void userLoginRequestWithNotExistId() throws Exception {
+        String email = "testEmail@test.com";
+        String password = "testPassword";
+
+        when(userService.login(email, password)).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(post("/user/login")
+                        .param("email", email)
+                        .param("password", password)
+        )
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/user/login"))
+                .andExpect(model().attributeExists("errorMessage"))
+                .andExpect(model().attribute("errorMessage", "존재하지 않는 아이디입니다"));
+    }
+
+    @Test
+    public void userLoginRequestWithWrongPassword() throws Exception {
+        String email = "testEmail@test.com";
+        String password = "testPassword";
+
+        when(userService.login(email, password)).thenThrow(PasswordMissMatchException.class);
+
+        mockMvc.perform(post("/user/login")
+                        .param("email", email)
+                        .param("password", password)
+        )
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/user/login"))
+                .andExpect(model().attributeExists("errorMessage"))
+                .andExpect(model().attribute("errorMessage", "잘못된 비밀번호입니다."));
+    }
 }
