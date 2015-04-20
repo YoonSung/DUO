@@ -36,6 +36,6 @@ public class LoginInterceptorTest {
     @Test
     public void 세션값이_존재하지_않을때_interceptor_요청() throws Exception {
         assertFalse(interceptor.preHandle(request, response, null));
-        assertEquals("/login", response.getRedirectedUrl());
+        assertEquals("/user/login", response.getRedirectedUrl());
     }
 }

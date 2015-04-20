@@ -43,7 +43,7 @@ public class UserController {
 
         //exists user
         if (selectedUser != null && selectedUser.getEmail().equals(user.getEmail())) {
-            model.addAttribute("error", "user already exists");
+            model.addAttribute("errorMessage", "user already exists");
 
         } else {
             userService.save(user);

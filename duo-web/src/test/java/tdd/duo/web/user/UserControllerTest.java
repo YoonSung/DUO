@@ -88,7 +88,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + "/user/register" + WebConfig.RESOLVER_SUFFIX))
                 .andExpect(model().size(2))
-                .andExpect(model().attributeExists("error"));
+                .andExpect(model().attributeExists("errorMessage"));
     }
 
     @Test
@@ -111,7 +111,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + "/user/register" + WebConfig.RESOLVER_SUFFIX))
                 .andExpect(model().size(2))
-                .andExpect(model().attributeExists("error"));
+                .andExpect(model().attributeExists("errorMessage"));
     }
 
 

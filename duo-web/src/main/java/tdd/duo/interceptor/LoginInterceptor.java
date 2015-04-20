@@ -17,7 +17,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         //Authentication Check
         if (WebUtils.getSessionAttribute(request, "id") == null ) {
-            response.sendRedirect("/login");
+            response.sendRedirect("/user/login");
             return false;
         }
 
