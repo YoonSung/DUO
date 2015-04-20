@@ -19,6 +19,11 @@
 <div id="container">
     <div id="inner-container">
         <h1>글목록</h1>
+        <c:if test="{not empty errorMessage}">
+            <div class="errorMessage">
+                ${errorMessage}
+            </div>
+        </c:if>
         <ol class="board">
             <c:forEach var="article" items="${articles}">
                 <li>${article.title}</li>

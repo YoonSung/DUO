@@ -18,8 +18,12 @@
 <div id="container">
     <div id="inner-container">
         <h1>회원가입</h1>
-
-        <form action="/user" method="post">
+        <c:if test="${not empty errorMessage}">
+            <div class="errorMessage">
+                    ${errorMessage}
+            </div>
+        </c:if>
+        <form action="/user/register" method="post">
             <input type="email" name="email" placeholder="이메일"/>
             <input type="password" name="password" placeholder="비밀번호"/>
             <input type="text" name="name" placeholder="닉네임"/>

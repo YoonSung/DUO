@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tdd.duo.domain.User;
 import tdd.duo.domain.auth.Authentication;
+import tdd.duo.exception.AlreadyExistException;
 import tdd.duo.exception.PasswordMismatchException;
 import tdd.duo.repository.UserRepository;
 
@@ -33,9 +34,23 @@ public class UserService {
         User user = userRepository.findByEmail(authentication.getId());
 
         if (!authentication.isMathchId(user))
-            throw new NotFoundException("Authentication Id mismatch or doen not exist");
+            throw new NotFoundException("Authentication Id mismatch or does not exist");
 
         if (!authentication.isMatchPassword(user))
             throw new PasswordMismatchException();
+    }
+
+    public User create(User user) throws AlreadyExistException, IllegalArgumentException {
+
+        if (!user.canRegistable()) {
+            throw new IllegalArgumentException();
+        }
+
+        User selectedUser = userRepository.findByEmail(user.getEmail());
+
+        if (selectedUser != null)
+            throw new AlreadyExistException();
+
+        return userRepository.save(user);
     }
 }

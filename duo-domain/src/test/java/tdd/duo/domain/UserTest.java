@@ -21,7 +21,7 @@ public class UserTest {
 
     @Test
     public void 올바른_파라미터를_이용한_가입가능여부_확인() {
-        assertTrue(testUser.canRegister());
+        assertTrue(testUser.canRegistable());
     }
 
     @Test
@@ -37,28 +37,28 @@ public class UserTest {
 
     @Test
     public void 유저패스워드_확인(){
-        assertTrue(testUser.checkPassword());
+        assertTrue(testUser.IsValidPassword());
 
         testUser.setPassword("");
-        assertFalse(testUser.checkPassword());
+        assertFalse(testUser.IsValidPassword());
     }
 
     @Test
     public void 유저이름_확인() {
-        assertTrue(testUser.checkName());
+        assertTrue(testUser.IsValidName());
         testUser.setName("");
-        assertFalse(testUser.checkName());
+        assertFalse(testUser.IsValidName());
     }
 
     @Test
     public void 유저나이_확인() {
-        assertTrue(testUser.checkAge());
+        assertTrue(testUser.IsValidAge());
         testUser.setAge(0);
 
-        assertFalse(testUser.checkAge());
+        assertFalse(testUser.IsValidAge());
         testUser.setAge(-1);
 
-        assertFalse(testUser.checkAge());
+        assertFalse(testUser.IsValidAge());
     }
 
 }

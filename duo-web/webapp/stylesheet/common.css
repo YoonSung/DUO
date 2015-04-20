@@ -19,6 +19,18 @@
     margin-left: -150px;
 }
 
+.errorMessage {
+    margin: 5px;
+    padding: 10px;
+    background-color: #FFC0CB;
+    color: red;
+    font-size: 0.9em;
+    font-weight: bold;
+    border: 1em solid red;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 a {
     margin-top: 10px;
     font-size: 0.8em;

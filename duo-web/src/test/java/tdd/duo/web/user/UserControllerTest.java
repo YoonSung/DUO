@@ -58,13 +58,13 @@ public class UserControllerTest {
 
     @Test
     public void userRegister() throws Exception {
-        mockMvc.perform(post("/user")
+        mockMvc.perform(post("/user/register")
                 .param("email", "test@gmail.com")
                 .param("name", "김우승")
                 .param("age", "31"))
 
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/user/home"));
+                .andExpect(redirectedUrl("/"));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class UserControllerTest {
         when(userService.findByEmail(testEmail)).thenReturn(testUser);
 
 
-        mockMvc.perform(post("/user")
+        mockMvc.perform(post("/user/register")
                 .param("email", testEmail)
                 .param("name", testName)
                 .param("age", "" + testAge))
@@ -103,7 +103,7 @@ public class UserControllerTest {
         when(userService.findByEmail(testEmail)).thenReturn(testUser);
 
 
-        mockMvc.perform(post("/user")
+        mockMvc.perform(post("/user/register")
                 .param("email", testEmail)
                 .param("name", testName)
                 .param("age", "" + testAge))

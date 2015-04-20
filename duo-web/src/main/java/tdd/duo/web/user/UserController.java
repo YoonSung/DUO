@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tdd.duo.domain.User;
 import tdd.duo.domain.auth.Authentication;
+import tdd.duo.exception.AlreadyExistException;
 import tdd.duo.exception.PasswordMismatchException;
 import tdd.duo.service.UserService;
 
@@ -32,22 +33,22 @@ public class UserController {
         return "/user/register";
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(User user, Model model){
 
-        logger.debug("paramUser : {}", user);
 
-        User selectedUser = userService.findByEmail(user.getEmail());
+        try {
+            //TODO AutoLogin and redirect to list page
+            userService.create(user);
+            return "redirect:/user/login";
 
-        logger.debug("selectedUser : {}", selectedUser);
+        } catch (IllegalArgumentException e) {
+            //TODO Detail ErrorMessage (age, name, id, password length etc)
+            model.addAttribute("errorMessage", "입력값을 다시 확인해 주세요");
+            logger.error("Invalid Argument- Email : {}, Name : {}, Age : {}, ", user.getEmail(), user.getName(), user.getAge());
 
-        //exists user
-        if (selectedUser != null && selectedUser.getEmail().equals(user.getEmail())) {
-            model.addAttribute("errorMessage", "user already exists");
-
-        } else {
-            userService.save(user);
-            return "redirect:/user/home";
+        } catch (AlreadyExistException e) {
+            model.addAttribute("errorMessage", "이미 존재하는 아이디입니다.");
         }
 
         return "/user/register";

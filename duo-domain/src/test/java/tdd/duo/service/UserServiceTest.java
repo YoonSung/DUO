@@ -1,6 +1,7 @@
 package tdd.duo.service;
 
 import javassist.NotFoundException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -11,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import tdd.duo.config.DBConfig;
 import tdd.duo.domain.User;
 import tdd.duo.domain.auth.Authentication;
+import tdd.duo.exception.AlreadyExistException;
 import tdd.duo.exception.PasswordMismatchException;
 import tdd.duo.repository.UserRepository;
 
@@ -30,6 +32,55 @@ public class UserServiceTest {
 
     @InjectMocks
     UserService userService;
+
+
+    User testUser;
+
+    @Before
+    public void setUp() {
+        this.testUser = new User();
+
+        String email = "testEmail@naver.com";
+        String name = "testName";
+        String password = "testPassword";
+        int age = 28;
+
+        testUser.setEmail(email);
+        testUser.setName(name);
+        testUser.setPassword(password);
+        testUser.setAge(age);
+    }
+
+
+    @Test
+    public void registerWithValidParameter() {
+        when(userRepository.findByEmail(testUser.getEmail())).thenReturn(null);
+
+        try {
+            userService.create(testUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Must not reach here");
+        }
+    }
+
+    @Test(expected = AlreadyExistException.class)
+    public void registerWithAlreadyExistUserEmail() throws AlreadyExistException {
+        when(userRepository.findByEmail(testUser.getEmail())).thenReturn(testUser);
+        userService.create(testUser);
+    }
+
+    @Test
+    public void registerWithInvalidParameter() throws AlreadyExistException {
+
+        testUser.setEmail(null);
+
+        try {
+            userService.create(testUser);
+            fail("Must not reach here");
+        } catch (IllegalArgumentException e) {
+        }
+    }
 
     @Test
     public void loginWithValidParameter() {

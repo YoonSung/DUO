@@ -118,16 +118,16 @@ public class User {
         return matcher.matches();
     }
 
-    public boolean canRegister() {
+    public boolean canRegistable() {
 
-        if (checkEmail() && checkName() && checkAge())
+        if (checkEmail() && IsValidName() && IsValidAge())
             return true;
 
         return false;
     }
 
     //TODO 나이제한
-    public boolean checkAge() {
+    public boolean IsValidAge() {
 
         if (age <= 0)
             return false;
@@ -136,14 +136,14 @@ public class User {
     }
 
     //TODO 길이제한
-    public boolean checkName() {
+    public boolean IsValidName() {
         if (StringUtils.isEmpty(this.name))
             return false;
 
         return true;
     }
 
-    public boolean checkPassword() {
+    public boolean IsValidPassword() {
         if (StringUtils.isEmpty(this.password))
             return false;
 
