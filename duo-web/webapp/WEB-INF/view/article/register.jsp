@@ -12,5 +12,10 @@
 </head>
 <body>
 <h1>Create new Post</h1>
+<form method="post", action="/article">
+  <input type="text" name="title" id="title" placeholder="제목" /> <br/>
+  <textarea name="content" rows="4" cols="30" placeholder="내용"></textarea> <br/>
+  <input type="submit"/>
+</form>
 </body>
 </html>

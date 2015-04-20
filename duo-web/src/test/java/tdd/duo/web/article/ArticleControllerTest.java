@@ -55,7 +55,7 @@ public class ArticleControllerTest {
 
         String expectedUrl = "/article/list";
 
-        mockMvc.perform(get("/article"))
+        mockMvc.perform(get("/article/list"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(expectedUrl))
                 .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX));
