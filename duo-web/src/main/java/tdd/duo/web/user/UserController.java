@@ -1,4 +1,4 @@
-package tdd.duo.web;
+package tdd.duo.web.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,9 +1,11 @@
-package tdd.duo.web;
+package tdd.duo.web.user;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import tdd.duo.config.WebConfig;
+import tdd.duo.web.HomeController;
+import tdd.duo.web.MvcTestUtil;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;

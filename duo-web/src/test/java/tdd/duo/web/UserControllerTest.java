@@ -12,15 +12,11 @@ import tdd.duo.config.AppConfig;
 import tdd.duo.config.WebConfig;
 import tdd.duo.domain.User;
 import tdd.duo.repository.UserRepository;
-
+import tdd.duo.web.user.UserController;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-/**
- * Created by kws on 15. 3. 31..
- */
 
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = {AppConfig.class})
