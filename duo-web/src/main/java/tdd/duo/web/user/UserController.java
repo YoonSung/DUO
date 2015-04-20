@@ -32,7 +32,7 @@ public class UserController {
         return "/user/register";
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public String register(User user, Model model){
 
         logger.debug("paramUser : {}", user);

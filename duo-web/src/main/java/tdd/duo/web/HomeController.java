@@ -13,6 +13,6 @@ public class HomeController {
     @RequestMapping("/")
     public String home() {
         logger.debug("home request test");
-        return "home";
+        return "/home";
     }
 }

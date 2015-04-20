@@ -33,7 +33,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/register", "/login", "/");
+                .excludePathPatterns("/user/register", "/user/login", "/");
     }
 
     @Bean

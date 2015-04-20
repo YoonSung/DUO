@@ -58,7 +58,7 @@ public class UserControllerTest {
 
     @Test
     public void userRegister() throws Exception {
-        mockMvc.perform(post("/user/register")
+        mockMvc.perform(post("/user")
                 .param("email", "test@gmail.com")
                 .param("name", "김우승")
                 .param("age", "31"))
@@ -80,7 +80,7 @@ public class UserControllerTest {
         when(userService.findByEmail(testEmail)).thenReturn(testUser);
 
 
-        mockMvc.perform(post("/user/register")
+        mockMvc.perform(post("/user")
                 .param("email", testEmail)
                 .param("name", testName)
                 .param("age", "" + testAge))
@@ -103,7 +103,7 @@ public class UserControllerTest {
         when(userService.findByEmail(testEmail)).thenReturn(testUser);
 
 
-        mockMvc.perform(post("/user/register")
+        mockMvc.perform(post("/user")
                 .param("email", testEmail)
                 .param("name", testName)
                 .param("age", "" + testAge))

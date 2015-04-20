@@ -6,11 +6,25 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Login Request Page</title>
+    <title>DUO - Login</title>
+    <link rel="stylesheet" href="/stylesheet/common.css"/>
+    <link rel="stylesheet" href="/stylesheet/reset.css"/>
 </head>
 <body>
-<h1>Login Request Page</h1>
+<div id="container">
+    <div id="inner-container">
+        <h1>로그인</h1>
+
+        <form action="/user/login" method="post">
+            <input type="email" name="email" placeholder="아이디"/>
+            <input type="password" name="password" placeholder="비밀번호"/>
+            <input type="submit" content="로그인"/>
+        </form>
+        <a href="/user/register">회원가입</a>
+    </div>
+</div>
 </body>
 </html>

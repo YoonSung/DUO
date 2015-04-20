@@ -9,19 +9,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>DUO 게시판</title>
+    <title>DUO - Article</title>
     <link rel="stylesheet" href="/stylesheet/list.css"/>
+    <link rel="stylesheet" href="/stylesheet/reset.css"/>
 </head>
 <body>
 <h1>Board List</h1>
 
-<div class="container">
-    <ol class="board">
-        <c:forEach var="article" items="${articles}">
-            <li>${article.title}</li>
-        </c:forEach>
-    </ol>
+<div id="container">
+    <div id="inner-container">
+        <h1>글목록</h1>
+        <ol class="board">
+            <c:forEach var="article" items="${articles}">
+                <li>${article.title}</li>
+            </c:forEach>
+        </ol>
+    </div>
 </div>
-
 </body>
 </html>
