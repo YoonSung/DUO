@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import tdd.duo.config.DBConfig;
 import tdd.duo.domain.Article;
 import tdd.duo.domain.User;
+import tdd.duo.dto.ArticlePage;
 import tdd.duo.exception.ArticleCreationException;
 import tdd.duo.exception.ArticleModificationException;
 import tdd.duo.exception.ArticleNotFoundException;
@@ -67,17 +68,17 @@ public class ArticleServiceTest {
         when(articleRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl(resultList, articleService.getPageRequest(requestPageNumber), totalSelectedListNum));
 
         // - WHEN
-        Page<Article> pageResult = articleService.findsByPageNumber(requestPageNumber);
+        ArticlePage articlePage = articleService.findsByPageNumber(requestPageNumber);
 
 
         // - THEN
-        int current = pageResult.getNumber() + 1;
-        int begin = Math.max(1, current - ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER);
-        int end = Math.min(current + ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER, pageResult.getTotalPages());
+        int current = articlePage.getCurrentPage();
+        int begin = articlePage.getStartPage();
+        int end = articlePage.getEndPage();
 
 
         //content 갯수 확인 - 이건 어떻게 확인하지..?
-        assertEquals(ArticleService.PAGE_PER_ARTICLE_NUMBER, pageResult.getContent().size());
+        assertEquals(ArticleService.PAGE_PER_ARTICLE_NUMBER, articlePage.getArticles().size());
 
         //return된 현재 페이지번호 확인
         assertEquals(requestPageNumber, current);

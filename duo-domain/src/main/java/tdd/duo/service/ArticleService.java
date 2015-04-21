@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tdd.duo.domain.Article;
 import tdd.duo.domain.User;
+import tdd.duo.dto.ArticlePage;
 import tdd.duo.exception.ArticleCreationException;
 import tdd.duo.exception.ArticleModificationException;
 import tdd.duo.exception.ArticleNotFoundException;
@@ -113,8 +114,8 @@ public class ArticleService {
         return articleRepository.findOne(articleId);
     }
 
-    public Page<Article> findsByPageNumber(int pageNumber) {
-        return articleRepository.findAll(getPageRequest(pageNumber));
+    public ArticlePage findsByPageNumber(int pageNumber) {
+        return new ArticlePage(articleRepository.findAll(getPageRequest(pageNumber)));
     }
 
     public PageRequest getPageRequest(int pageNumber) {
