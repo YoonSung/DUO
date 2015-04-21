@@ -114,6 +114,7 @@ public class ArticleService {
         return articleRepository.findOne(articleId);
     }
 
+    //TODO Throw IllegalException, if pageNumber is exceeding limit
     public ArticlePage findsByPageNumber(int pageNumber) {
         return new ArticlePage(articleRepository.findAll(getPageRequest(pageNumber)));
     }

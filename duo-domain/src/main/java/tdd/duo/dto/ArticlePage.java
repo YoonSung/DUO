@@ -17,9 +17,19 @@ public class ArticlePage {
     private int current;
     private int start;
     private int end;
+    private List<Article> articles;
+
+    public ArticlePage(int start, int current, int end, List<Article> list) {
+        this.start = start;
+        this.current = current;
+        this.end = end;
+        this.articles = list;
+    }
 
     public List<Article> getArticles() {
-        return this.page.getContent();
+        if (this.articles == null)
+            this.articles = this.page.getContent();
+        return articles;
     }
 
     public ArticlePage(Page<Article> page) {

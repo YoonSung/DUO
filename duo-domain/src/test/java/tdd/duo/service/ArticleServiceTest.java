@@ -52,6 +52,7 @@ public class ArticleServiceTest {
     private ArticleService articleService;
 
 
+    //Negative Test가 실패한다. 해결방법은?
     @Test
     public void 정상적인_리스트페이지_요청() {
 
@@ -87,7 +88,6 @@ public class ArticleServiceTest {
         assertEquals(requestPageNumber - ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER, begin);
         assertEquals(requestPageNumber + ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER, end);
     }
-
 
     @Test(expected = ArticleCreationException.class)
      public void 잘못된데이터로_새글쓰기를_요청한경우() throws ArticleCreationException {

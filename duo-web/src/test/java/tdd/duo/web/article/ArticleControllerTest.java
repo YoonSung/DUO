@@ -15,6 +15,7 @@ import tdd.duo.config.DBConfig;
 import tdd.duo.config.WebConfig;
 import tdd.duo.domain.Article;
 import tdd.duo.domain.User;
+import tdd.duo.dto.ArticlePage;
 import tdd.duo.exception.ArticleCreationException;
 import tdd.duo.exception.ArticleModificationException;
 import tdd.duo.exception.ArticleNotFoundException;
@@ -54,11 +55,13 @@ public class ArticleControllerTest {
     public void listViewRequestWithNoParameter() throws Exception {
         String expectedUrl = "/article/list";
 
+        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, new ArrayList<>()));
+
         mockMvc.perform(get("/article/list"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(expectedUrl))
                 .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX))
-                .andExpect(model().size(1))
+                .andExpect(model().size(4))
                 .andExpect(model().attributeExists("articles"));
     }
 
@@ -67,10 +70,10 @@ public class ArticleControllerTest {
         int page = -100;
 
         when(articleService.findsByPageNumber(page)).thenThrow(IllegalArgumentException.class);
-        when(articleService.findsByPageNumber(1)).thenReturn(new ArrayList<Article>(ArticleService.PAGE_PER_ARTICLE_NUMBER));
+        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, new ArrayList<>()));
 
-        MvcResult result = listViewRequestWithPageNumber(page)
-                .andExpect(model().size(2))
+        listViewRequestWithPageNumber(page)
+                .andExpect(model().size(5))
                 .andExpect(model().attributeExists("errorMessage"))
                 .andReturn();
     }
@@ -80,10 +83,10 @@ public class ArticleControllerTest {
 
         int page = 1000;
         when(articleService.findsByPageNumber(page)).thenThrow(IllegalArgumentException.class);
-        when(articleService.findsByPageNumber(1)).thenReturn(new ArrayList<Article>(ArticleService.PAGE_PER_ARTICLE_NUMBER));
+        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, new ArrayList<>()));
 
-        MvcResult result = listViewRequestWithPageNumber(page)
-                .andExpect(model().size(2))
+        listViewRequestWithPageNumber(page)
+                .andExpect(model().size(5))
                 .andExpect(model().attributeExists("errorMessage"))
                 .andReturn();
     }
@@ -91,20 +94,11 @@ public class ArticleControllerTest {
     @Test
     public void listViewRequestWithPagingNumber() throws Exception {
 
-        List<Article> resultList = new ArrayList<>();
-        for (int i = 0 ; i < 5 ; ++i) {
-            resultList.add(new Article());
-        }
+        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, new ArrayList<>()));
 
-        when(articleService.findsByPageNumber(1)).thenReturn(resultList);
-
-        MvcResult result = listViewRequestWithPageNumber(1)
-                .andExpect(model().size(1))
+        listViewRequestWithPageNumber(1)
+                .andExpect(model().size(4))
                 .andReturn();
-
-        List<Article> articles = (List<Article>) result.getModelAndView().getModel().get("articles");
-
-        assertEquals(ArticleService.PAGE_PER_ARTICLE_NUMBER, articles.size());
     }
 
 

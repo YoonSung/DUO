@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tdd.duo.domain.Article;
+import tdd.duo.dto.ArticlePage;
 import tdd.duo.exception.ArticleCreationException;
 import tdd.duo.exception.ArticleModificationException;
 import tdd.duo.exception.ArticleNotFoundException;
@@ -36,16 +37,20 @@ public class ArticleController {
             model.addAttribute("errorMessage", "잘못된 페이지 요청입니다.");
         }
 
-        List<Article> articles;
+        ArticlePage articlePage;
 
         try {
-            articles = articleService.findsByPageNumber(page);
+            articlePage = articleService.findsByPageNumber(page);
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", "잘못된 페이지 요청입니다.");
-            articles = articleService.findsByPageNumber(1);
+            articlePage = articleService.findsByPageNumber(1);
         }
 
-        model.addAttribute("articles", articles);
+        model.addAttribute("startPage", articlePage.getStartPage());
+        model.addAttribute("currentPage", articlePage.getCurrentPage());
+        model.addAttribute("endPage", articlePage.getEndPage());
+        model.addAttribute("articles", articlePage.getArticles());
+
         return "/article/list";
     }
 
