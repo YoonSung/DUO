@@ -5,7 +5,7 @@
     CommentController, Comment domain Class, Test Code 만들기
     Custom Exception을 활용하여 Refactoring (Global하게 사용가능하도록 리팩토링)
     Constant를 활용한 refactoring
-    TestCode Refactoring (메서드명 한글화 등, 기준을 정해서 진행)
+    TestCode Refactoring (메서드명 한글화, verify 적용 등, 기준을 정해서 진행)
     DBExporter 추가하기
 
 학습

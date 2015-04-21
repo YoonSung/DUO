@@ -1,6 +1,9 @@
 package tdd.duo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tdd.duo.domain.Article;
@@ -22,6 +25,7 @@ public class ArticleService {
     public static final String VALIDATION_EXCEPTION_MESSAGE = "입력데이터를 다시확인해 주시기 바랍니다.";
     public static final String INVALID_REQUEST_EXCEPTION_MESSAGE = "잘못된 요청입니다";
     public static final int PAGE_PER_ARTICLE_NUMBER = 5;
+    public static final int PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER = 5;
 
     @Autowired
     private ArticleRepository articleRepository;
@@ -109,7 +113,11 @@ public class ArticleService {
         return articleRepository.findOne(articleId);
     }
 
-    public List<Article> findsByPageNumber(int pageNumber) {
-        return null;
+    public Page<Article> findsByPageNumber(int pageNumber) {
+        return articleRepository.findAll(getPageRequest(pageNumber));
+    }
+
+    public PageRequest getPageRequest(int pageNumber) {
+        return new PageRequest(pageNumber - 1, PAGE_PER_ARTICLE_NUMBER, Sort.Direction.DESC, "id");
     }
 }

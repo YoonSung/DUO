@@ -8,6 +8,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ContextConfiguration;
 import tdd.duo.config.DBConfig;
 import tdd.duo.domain.Article;
@@ -19,6 +24,11 @@ import tdd.duo.repository.ArticleRepository;
 
 import javax.naming.AuthenticationException;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -39,6 +49,44 @@ public class ArticleServiceTest {
 
     @InjectMocks
     private ArticleService articleService;
+
+
+    @Test
+    public void 정상적인_리스트페이지_요청() {
+
+        // - GIVEN
+        int totalSelectedListNum = 500;
+        int requestPageNumber = 13;
+
+        List<Article> resultList = new ArrayList<Article>();
+
+        for (int i = 1; i <= ArticleService.PAGE_PER_ARTICLE_NUMBER; i++) {
+            resultList.add(new Article());
+        }
+
+        when(articleRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl(resultList, articleService.getPageRequest(requestPageNumber), totalSelectedListNum));
+
+        // - WHEN
+        Page<Article> pageResult = articleService.findsByPageNumber(requestPageNumber);
+
+
+        // - THEN
+        int current = pageResult.getNumber() + 1;
+        int begin = Math.max(1, current - ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER);
+        int end = Math.min(current + ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER, pageResult.getTotalPages());
+
+
+        //content 갯수 확인 - 이건 어떻게 확인하지..?
+        assertEquals(ArticleService.PAGE_PER_ARTICLE_NUMBER, pageResult.getContent().size());
+
+        //return된 현재 페이지번호 확인
+        assertEquals(requestPageNumber, current);
+
+        //Pagination의 첫번째 노출페이지 번호 확인
+        assertEquals(requestPageNumber - ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER, begin);
+        assertEquals(requestPageNumber + ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER, end);
+    }
+
 
     @Test(expected = ArticleCreationException.class)
      public void 잘못된데이터로_새글쓰기를_요청한경우() throws ArticleCreationException {
