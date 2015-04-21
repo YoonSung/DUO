@@ -25,15 +25,31 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    //TODO Add model data(articles), Refactoring with listFromQuery
     @RequestMapping("/list")
-    public String list(Model model) {
+    public String pageList(Integer page, Model model) {
 
-        List<Article> articles = articleService.findAll();
+        if (page == null) {
+            page = 1;
+
+        } else if (page <= 0) {
+            page = 1;
+            model.addAttribute("errorMessage", "잘못된 페이지 요청입니다.");
+        }
+
+        List<Article> articles;
+
+        try {
+            articles = articleService.findsByPageNumber(page);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", "잘못된 페이지 요청입니다.");
+            articles = articleService.findsByPageNumber(1);
+        }
+
         model.addAttribute("articles", articles);
         return "/article/list";
     }
 
+    //TODO Refactoring or delete
     @RequestMapping("/query")
     public String listFromQuery(String query, Model model) {
 

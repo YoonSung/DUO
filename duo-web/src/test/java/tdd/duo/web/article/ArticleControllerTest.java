@@ -50,43 +50,74 @@ public class ArticleControllerTest {
         this.mockMvc = MvcTestUtil.getMockMvc(articleController);
     }
 
-    //TODO Refactoring
     @Test
     public void listViewRequestWithNoParameter() throws Exception {
-
         String expectedUrl = "/article/list";
 
         mockMvc.perform(get("/article/list"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(expectedUrl))
-                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX));
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX))
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("articles"));
     }
 
-    //TODO Add
+    @Test
+    public void listViewRequestWithZeroOrNegativeIntegerParameter() throws Exception {
+        int page = -100;
+
+        when(articleService.findsByPageNumber(page)).thenThrow(IllegalArgumentException.class);
+        when(articleService.findsByPageNumber(1)).thenReturn(new ArrayList<Article>(ArticleService.PAGE_PER_ARTICLE_NUMBER));
+
+        MvcResult result = listViewRequestWithPageNumber(page)
+                .andExpect(model().size(2))
+                .andExpect(model().attributeExists("errorMessage"))
+                .andReturn();
+    }
+
     @Test
     public void listViewRequestWithExceedPageNumber() throws Exception {
 
+        int page = 1000;
+        when(articleService.findsByPageNumber(page)).thenThrow(IllegalArgumentException.class);
+        when(articleService.findsByPageNumber(1)).thenReturn(new ArrayList<Article>(ArticleService.PAGE_PER_ARTICLE_NUMBER));
+
+        MvcResult result = listViewRequestWithPageNumber(page)
+                .andExpect(model().size(2))
+                .andExpect(model().attributeExists("errorMessage"))
+                .andReturn();
     }
 
     @Test
     public void listViewRequestWithPagingNumber() throws Exception {
-        String expectedUrl = "/article/list";
 
-        when(articleService.findsByPageNumber(1)).thenReturn(new ArrayList<Article>(ArticleService.PAGE_PER_ARTICLE_NUMBER));
+        List<Article> resultList = new ArrayList<>();
+        for (int i = 0 ; i < 5 ; ++i) {
+            resultList.add(new Article());
+        }
 
+        when(articleService.findsByPageNumber(1)).thenReturn(resultList);
 
-        MvcResult result = mockMvc.perform(get("/article/list")
-                        .param("page", "1")
-        )
-                .andExpect(status().isOk())
-                .andExpect(view().name(expectedUrl))
-                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX))
-                .andExpect(model().attributeExists("articles"))
+        MvcResult result = listViewRequestWithPageNumber(1)
+                .andExpect(model().size(1))
                 .andReturn();
 
         List<Article> articles = (List<Article>) result.getModelAndView().getModel().get("articles");
 
         assertEquals(ArticleService.PAGE_PER_ARTICLE_NUMBER, articles.size());
+    }
+
+
+    private ResultActions listViewRequestWithPageNumber(int page) throws Exception {
+        String expectedUrl = "/article/list";
+
+        return mockMvc.perform(get("/article/list")
+                        .param("page", ""+page)
+        )
+                .andExpect(status().isOk())
+                .andExpect(view().name(expectedUrl))
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX))
+                .andExpect(model().attributeExists("articles"));
     }
 
     @Test
