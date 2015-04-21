@@ -21,6 +21,7 @@ public class ArticleService {
 
     public static final String VALIDATION_EXCEPTION_MESSAGE = "입력데이터를 다시확인해 주시기 바랍니다.";
     public static final String INVALID_REQUEST_EXCEPTION_MESSAGE = "잘못된 요청입니다";
+    public static final int PAGE_PER_ARTICLE_NUMBER = 5;
 
     @Autowired
     private ArticleRepository articleRepository;
@@ -106,5 +107,9 @@ public class ArticleService {
             return null;
 
         return articleRepository.findOne(articleId);
+    }
+
+    public List<Article> findsByPageNumber(int pageNumber) {
+        return null;
     }
 }
