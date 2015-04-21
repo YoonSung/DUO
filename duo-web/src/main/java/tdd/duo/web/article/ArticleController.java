@@ -62,6 +62,20 @@ public class ArticleController {
         return "redirect:/article/list";
     }
 
+    @RequestMapping(value = "/{id}")
+    public String detailView(@PathVariable Long id, Model model) {
+
+        Article article = articleService.findById(id);
+
+        if (article == null) {
+            model.addAttribute("errorMessage", "잘못된 접근입니다");
+            return "/article/list";
+        }
+
+        model.addAttribute("article", article);
+        return "/article/detail";
+    }
+
     //TODO Use PathVariable
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String modify(@PathVariable int id, Article article, Model model) {

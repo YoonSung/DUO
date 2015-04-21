@@ -100,4 +100,11 @@ public class ArticleService {
         //TODO Sorting
         return articleRepository.findAll();
     }
+
+    public Article findById(Long articleId) {
+        if (articleId <= 0)
+            return null;
+
+        return articleRepository.findOne(articleId);
+    }
 }

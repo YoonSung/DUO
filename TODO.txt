@@ -1,8 +1,6 @@
 -TODO------------------------------------------------------------------
 
 백앤드
-    article list에 보여줄 mock data를 위한 Generator TestController 만들기
-    export sql, flyway-migration tool 설치
     Custom Exception을 활용하여 Refactoring
 
 
@@ -12,7 +10,7 @@
 프론트엔드
     글목록 페이지 만들기
     게시판 글목록 페이지 만들기
-
+    jsp include방식으로 변경
 
 -DONE------------------------------------------------------------------
 
@@ -23,3 +21,5 @@
 리팩토링 (negative 테스트케이스 추가)
 SessionService와 게시판 글 업로드하는 과정에서 SessionService와 연동하는 로직개발 - login유무는 interceptor에서 처리할 것이기 때문에 무시
 게시판의 글을 삭제할 수 있다.
+article list에 보여줄 mock data를 위한 Generator TestController 만들기
+export sql, flyway-migration tool 설치

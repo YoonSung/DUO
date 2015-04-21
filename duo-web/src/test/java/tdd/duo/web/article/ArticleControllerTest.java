@@ -111,6 +111,61 @@ public class ArticleControllerTest {
     }
 
     @Test
+    public void getArticleDetailView() throws Exception {
+
+        String expectedUrl = "/article/detail";
+
+        // --GIVEN
+        //User Set
+        String authorName = "testUser";
+        User author = new User();
+        author.setName(authorName);
+
+
+        //Article Set
+        Long articleId = 1L;
+        String articleTitle = "testTitle";
+        String articleContent = "testContent";
+        Article article = new Article();
+        article.setId(articleId);
+        article.setAuthor(author);
+        article.setTitle(articleTitle);
+        article.setContent(articleContent);
+
+        when(articleService.findById(articleId)).thenReturn(article);
+
+        // --WHEN, THEN
+        MvcResult result = mockMvc.perform(get("/article/"+articleId))
+                .andExpect(view().name(expectedUrl))
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX))
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("article")).andReturn();
+
+        Article articleResult = (Article) result.getModelAndView().getModel().get("article");
+
+        assertEquals(articleId, article.getId());
+        assertEquals(authorName, article.getAuthor().getName());
+        assertEquals(articleTitle, article.getTitle());
+        assertEquals(articleContent, article.getContent());
+
+    }
+
+    @Test
+    public void getArticleDetailViewRequestWithInvalidParameter() throws Exception {
+
+        String expectedUrl = "/article/list";
+
+        long articleId = 1;
+        when(articleService.findById(articleId)).thenReturn(null);
+
+        mockMvc.perform(get("/article/" + articleId))
+                .andExpect(view().name(expectedUrl))
+                .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX))
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("errorMessage"));
+    }
+
+    @Test
     public void getArticlesFromQueryString() throws Exception {
 
         //GIVEN

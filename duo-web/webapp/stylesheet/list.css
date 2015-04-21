@@ -8,15 +8,6 @@ ol.board {
     margin-left: -25%;
 }
 
-/*.board li {*/
-    /*display: table;*/
-    /*table-layout: fixed;*/
-    /*width: 100%;*/
-    /*color: #999;*/
-    /*border: 1px solid #e5e5e5;*/
-    /*padding: 0.3em;*/
-/*}*/
-
 .board li {
     list-style: none;
     padding: 10px 15px 10px 25px;
