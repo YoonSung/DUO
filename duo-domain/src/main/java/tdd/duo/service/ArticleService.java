@@ -102,11 +102,6 @@ public class ArticleService {
         articleRepository.delete(article);
     }
 
-    public List<Article> findAll() {
-        //TODO Sorting
-        return articleRepository.findAll();
-    }
-
     public Article findById(Long articleId) {
         if (articleId <= 0)
             return null;
