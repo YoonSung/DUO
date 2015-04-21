@@ -21,24 +21,24 @@ public class ArticleTest {
     @Test
     public void 글작성자가_없을때_등록요청() {
         article.setAuthor(null);
-        assertFalse(article.isRegisterable());
+        assertFalse(article.isRegistable());
     }
 
     @Test
     public void 글제목이_null이거나_빈문자열일때_등록요청() {
         article.setTitle("");
-        assertFalse(article.isRegisterable());
+        assertFalse(article.isRegistable());
 
         article.setTitle(null);
-        assertFalse(article.isRegisterable());
+        assertFalse(article.isRegistable());
     }
 
     @Test
     public void 글내용이_null이거나_빈문자열일때_등록요청() {
         article.setContent("");
-        assertFalse(article.isRegisterable());
+        assertFalse(article.isRegistable());
 
         article.setContent(null);
-        assertFalse(article.isRegisterable());
+        assertFalse(article.isRegistable());
     }
 }

@@ -34,7 +34,7 @@ public class ArticleService {
         article.setAuthor(user);
 
         //새로 업로드요청한 데이터의 정합성 체크
-        if (article.isRegisterable())
+        if (article.isRegistable())
             articleRepository.save(article);
         else
             throw new ArticleCreationException(VALIDATION_EXCEPTION_MESSAGE);
@@ -54,7 +54,7 @@ public class ArticleService {
         requestArticle.setAuthor(user);
 
         //수정요청 데이터의 정합성 확인
-        if (!requestArticle.isRegisterable()) {
+        if (!requestArticle.isRegistable()) {
             throw new ArticleModificationException(VALIDATION_EXCEPTION_MESSAGE);
         }
 

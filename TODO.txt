@@ -1,7 +1,10 @@
 -TODO------------------------------------------------------------------
 
 백앤드
+    article list에 보여줄 mock data를 위한 Generator TestController 만들기
+    export sql, flyway-migration tool 설치
     Custom Exception을 활용하여 Refactoring
+
 
 학습
     JPA의 Pagable 학습

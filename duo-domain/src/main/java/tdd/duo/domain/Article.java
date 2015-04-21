@@ -26,6 +26,7 @@ public class Article {
     @JoinColumn(name = "user_id")
     private User author;
 
+    //TODO implement Listener Type
     @Column(updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
@@ -46,8 +47,14 @@ public class Article {
         return content;
     }
 
-    public boolean isRegisterable() {
-        if (isValidId() && isValidAuthor() == true && isValidTitle() == true && isValidContent() == true)
+    //http://stackoverflow.com/questions/221611/creation-timestamp-and-last-update-timestamp-with-hibernate-and-mysql
+    @PrePersist
+    protected void onCreate() {
+        this.createdTime = new Date();
+    }
+
+    public boolean isRegistable() {
+        if (isValidAuthor() == true && isValidTitle() == true && isValidContent() == true)
             return true;
 
         return false;
@@ -62,13 +69,6 @@ public class Article {
                 ", author=" + author +
                 ", createdTime=" + createdTime +
                 '}';
-    }
-
-    private boolean isValidId() {
-        if (this.id == null)
-            return false;
-
-        return this.id > 0 ? true : false;
     }
 
     private boolean isValidContent() {
@@ -112,5 +112,9 @@ public class Article {
 
     public User getAuthor() {
         return author;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
