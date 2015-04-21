@@ -4,6 +4,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by yoon on 15. 4. 14..
@@ -25,6 +26,10 @@ public class Article {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User author;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "article_id")
+    private List<Comment> comments;
 
     //TODO implement Listener Type
     @Column(updatable = false, nullable = false)
