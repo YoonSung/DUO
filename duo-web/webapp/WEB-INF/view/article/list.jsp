@@ -11,12 +11,10 @@
 <head>
     <title>DUO - Article</title>
     <link rel="stylesheet" href="/stylesheet/list.css"/>
-    <link rel="stylesheet" href="/stylesheet/reset.css"/>
     <link rel="stylesheet" href="/stylesheet/common.css"/>
+    <link rel="stylesheet" href="/stylesheet/reset.css"/>
 </head>
 <body>
-<h1>Board List</h1>
-
 <div id="container">
     <div id="inner-container">
         <h1>글목록</h1>
@@ -27,7 +25,14 @@
         </c:if>
         <ol class="board">
             <c:forEach var="article" items="${articles}">
-                <li>${article.title}</li>
+                <li>
+                    <a href="/article/${article.id}">
+                    <div class="row">
+                        <p class="title">> ${article.title}</p>
+                        <p class="time">${article.createdTime}</p>
+                    </div>
+                    </a>
+                </li>
             </c:forEach>
         </ol>
     </div>

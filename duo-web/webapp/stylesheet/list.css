@@ -4,14 +4,31 @@ ol.board {
     border-bottom: 1px solid #e5e5e5;
     margin-top: 10px;
     list-style-type: none;
-    width: 40px;
+    width: 150%;
+    margin-left: -25%;
 }
 
-li {
-    display: table;
-    table-layout: fixed;
+/*.board li {*/
+    /*display: table;*/
+    /*table-layout: fixed;*/
+    /*width: 100%;*/
+    /*color: #999;*/
+    /*border: 1px solid #e5e5e5;*/
+    /*padding: 0.3em;*/
+/*}*/
+
+.board li {
+    list-style: none;
+    padding: 10px 15px 10px 25px;
+    border: 1px solid #CCC;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.5);
+    margin-bottom: 5px;
     width: 100%;
-    color: #999;
-    border: 1px solid #e5e5e5;
-    padding: 0.3em;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.board li:hover {
+    border: 1px solid #999999;
 }

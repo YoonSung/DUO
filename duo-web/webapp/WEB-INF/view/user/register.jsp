@@ -20,6 +20,7 @@
         <h1>회원가입</h1>
         <c:if test="${not empty errorMessage}">
             <div class="errorMessage">
+                <
                     ${errorMessage}
             </div>
         </c:if>
