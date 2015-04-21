@@ -55,13 +55,13 @@ public class ArticleControllerTest {
     public void listViewRequestWithNoParameter() throws Exception {
         String expectedUrl = "/article/list";
 
-        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, new ArrayList<>()));
+        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, 1, new ArrayList<>()));
 
         mockMvc.perform(get("/article/list"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(expectedUrl))
                 .andExpect(forwardedUrl(WebConfig.RESOLVER_PREFIX + expectedUrl + WebConfig.RESOLVER_SUFFIX))
-                .andExpect(model().size(4))
+                .andExpect(model().size(5))
                 .andExpect(model().attributeExists("articles"));
     }
 
@@ -70,10 +70,10 @@ public class ArticleControllerTest {
         int page = -100;
 
         when(articleService.findsByPageNumber(page)).thenThrow(IllegalArgumentException.class);
-        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, new ArrayList<>()));
+        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, 1, new ArrayList<>()));
 
         listViewRequestWithPageNumber(page)
-                .andExpect(model().size(5))
+                .andExpect(model().size(6))
                 .andExpect(model().attributeExists("errorMessage"))
                 .andReturn();
     }
@@ -83,10 +83,10 @@ public class ArticleControllerTest {
 
         int page = 1000;
         when(articleService.findsByPageNumber(page)).thenThrow(IllegalArgumentException.class);
-        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, new ArrayList<>()));
+        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, 1, new ArrayList<>()));
 
         listViewRequestWithPageNumber(page)
-                .andExpect(model().size(5))
+                .andExpect(model().size(6))
                 .andExpect(model().attributeExists("errorMessage"))
                 .andReturn();
     }
@@ -94,10 +94,10 @@ public class ArticleControllerTest {
     @Test
     public void listViewRequestWithPagingNumber() throws Exception {
 
-        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, new ArrayList<>()));
+        when(articleService.findsByPageNumber(1)).thenReturn(new ArticlePage(1, 1, 1, 1, new ArrayList<>()));
 
         listViewRequestWithPageNumber(1)
-                .andExpect(model().size(4))
+                .andExpect(model().size(5))
                 .andReturn();
     }
 

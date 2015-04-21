@@ -23,3 +23,37 @@ ol.board {
 .board li:hover {
     border: 1px solid #999999;
 }
+
+ol.pagination {
+    display: table;
+    width: 250%;
+    margin-left: -75%;
+    text-align: center;
+}
+
+.pagination li {
+    list-style: none;
+    display: inline-block;
+    margin: 0px 5px;
+    height: 20px;
+    width: 30px;
+    border: 1px solid #CCCCCC;
+    padding: auto;
+}
+
+.pagination a{
+    color: black;
+    text-align: center;
+    display: inline-block;
+    width: inherit;
+    height: inherit;
+    margin-top: 0px !important;
+}
+
+.pagination li.active {
+    display: inline-block;
+}
+
+.pagination li.disabled {
+    display: none;
+}

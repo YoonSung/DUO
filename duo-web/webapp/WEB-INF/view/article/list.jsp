@@ -35,6 +35,39 @@
                 </li>
             </c:forEach>
         </ol>
+        <ol class="pagination">
+            <c:choose>
+                <c:when test="${currentPage == 1}">
+                    <li class="disabled"><a href="#">&lt;&lt;</a></li>
+                    <li class="disabled"><a href="#">&lt;</a></li>
+                </c:when>
+                <c:otherwise>
+                    <li><a href="/article/list?page=1">&lt;&lt;</a></li>
+                    <li><a href="/article/list?page=${currentPage-5}">&lt;</a></li>
+                </c:otherwise>
+            </c:choose>
+            <c:forEach var="i" begin="${startPage}" end="${endPage}">
+                <c:url var="pageUrl" value="/article/list?page=${i}" />
+                <c:choose>
+                    <c:when test="${i == currentPage}">
+                        <li class="active"><a href="${pageUrl}"><c:out value="${i}" /></a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="${pageUrl}"><c:out value="${i}" /></a></li>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:choose>
+                <c:when test="${currentPage >= totalEndPage-5}">
+                    <li class="disabled"><a href="#">&gt;</a></li>
+                    <li class="disabled"><a href="#">&gt;&gt;</a></li>
+                </c:when>
+                <c:otherwise>
+                    <li><a href="/article/list?page=${currentPage + 5}">&gt;</a></li>
+                    <li><a href="/article/list?page=${totalEndPage}">&gt;&gt;</a></li>
+                </c:otherwise>
+            </c:choose>
+        </ol>
     </div>
 </div>
 </body>

@@ -37,7 +37,7 @@
         </p>
         <p></p>
       </div>
-      <div class="spliter"/>
+      <div class="seperator"/>
       <div class="title">
         <span >제목 : </span>
         ${article.title}
@@ -49,6 +49,11 @@
       </div>
 
       <div class="comment">
+        <div>
+          <strong>3</strong> Comments
+        </div>
+        <div class="seperator"/>
+
       </div>
     </div>
   </div>

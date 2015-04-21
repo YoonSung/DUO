@@ -17,12 +17,15 @@ public class ArticlePage {
     private int current;
     private int start;
     private int end;
+    private int totalEnd;
+
     private List<Article> articles;
 
-    public ArticlePage(int start, int current, int end, List<Article> list) {
+    public ArticlePage(int start, int current, int end, int totalEnd, List<Article> list) {
         this.start = start;
         this.current = current;
         this.end = end;
+        this.totalEnd = totalEnd;
         this.articles = list;
     }
 
@@ -45,7 +48,7 @@ public class ArticlePage {
 
     public int getStartPage() {
         if (this.start == 0)
-            this.start = Math.max(1, getCurrentPage() - ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER);
+            this.start = Math.max(1, getCurrentPage());
 
         return this.start;
     }
@@ -55,5 +58,12 @@ public class ArticlePage {
             this.end = Math.min(getCurrentPage() + ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER, this.page.getTotalPages());
 
         return end;
+    }
+
+    public int getTotalEndPage() {
+
+        if (this.totalEnd == 0)
+            this.totalEnd = this.page.getTotalPages();
+        return this.totalEnd;
     }
 }

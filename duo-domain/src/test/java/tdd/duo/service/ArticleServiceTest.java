@@ -53,6 +53,7 @@ public class ArticleServiceTest {
 
 
     //Negative Test가 실패한다. 해결방법은?
+    //TODO Add Total End Page Test
     @Test
     public void 정상적인_리스트페이지_요청() {
 
@@ -85,7 +86,7 @@ public class ArticleServiceTest {
         assertEquals(requestPageNumber, current);
 
         //Pagination의 첫번째 노출페이지 번호 확인
-        assertEquals(requestPageNumber - ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER, begin);
+        assertEquals(requestPageNumber, begin);
         assertEquals(requestPageNumber + ArticleService.PAGENATION_INTERVAL_FROM_CURRENT_PAGENUMBER, end);
     }
 

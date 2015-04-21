@@ -11,10 +11,8 @@ div.article {
     overflow-y:scroll;
 }
 
-.article .spliter {
-    height: 1px;
-    width: 100%;
-    background-color: #CCCCCC;
+.article .seperator {
+    border-bottom: 1px solid #d4d4d4;
 }
 
 .article .info {

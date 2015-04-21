@@ -49,6 +49,7 @@ public class ArticleController {
         model.addAttribute("startPage", articlePage.getStartPage());
         model.addAttribute("currentPage", articlePage.getCurrentPage());
         model.addAttribute("endPage", articlePage.getEndPage());
+        model.addAttribute("totalEndPage", articlePage.getTotalEndPage());
         model.addAttribute("articles", articlePage.getArticles());
 
         return "/article/list";
