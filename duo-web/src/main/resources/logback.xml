@@ -10,12 +10,7 @@
 		</encoder>
 	</appender>
 
-
 	<logger name="tdd.duo">
-		<level value="DEBUG" />
-	</logger>
-	
-	<logger name="org.springframework.security">
 		<level value="DEBUG" />
 	</logger>
 
