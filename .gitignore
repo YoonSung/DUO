@@ -3,5 +3,5 @@
 *.iml
 .gradle
 /classes
-
+tomcat.*
 out
