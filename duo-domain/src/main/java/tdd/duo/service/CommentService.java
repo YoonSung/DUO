@@ -25,6 +25,7 @@ public class CommentService {
 
         comment.setAuthor(sessionService.getCurrentUser());
 
+        //TODO articleId Check
         if (!comment.canRegistable())
             throw new IllegalArgumentException();
 
