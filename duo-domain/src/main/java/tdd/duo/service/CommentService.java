@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import tdd.duo.domain.Comment;
+import tdd.duo.domain.User;
 import tdd.duo.repository.CommentRepository;
 
 /**
@@ -15,9 +16,14 @@ public class CommentService {
     @Autowired
     CommentRepository commentRepository;
 
+    @Autowired
+    SessionService sessionService;
+
     public Comment create(Comment comment) {
 
         Assert.notNull(comment);
+
+        comment.setAuthor(sessionService.getCurrentUser());
 
         if (!comment.canRegistable())
             throw new IllegalArgumentException();

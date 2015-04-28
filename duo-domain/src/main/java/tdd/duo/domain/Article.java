@@ -123,6 +123,10 @@ public class Article {
         this.id = id;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
     public Date getCreatedTime() {
         return createdTime;
     }
