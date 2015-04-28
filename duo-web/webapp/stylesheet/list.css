@@ -13,11 +13,12 @@ ol.board {
     padding: 10px 15px 10px 25px;
     border: 1px solid #CCC;
     box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.5);
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     width: 100%;
     box-sizing: border-box;
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 5px;
+    background-color: #FFFFFF;
 }
 
 .board li:hover {

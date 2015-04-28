@@ -24,6 +24,7 @@
             </div>
         </c:if>
         <ol class="board">
+            <a href="/article/register">새글쓰기</a>
             <c:forEach var="article" items="${articles}">
                 <li>
                     <a href="/article/${article.id}">
