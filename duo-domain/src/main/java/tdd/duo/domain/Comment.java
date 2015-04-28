@@ -16,7 +16,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
     @Column(nullable = false)
