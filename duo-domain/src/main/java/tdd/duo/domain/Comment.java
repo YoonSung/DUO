@@ -1,5 +1,7 @@
 package tdd.duo.domain;
 
+import org.springframework.util.StringUtils;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -14,13 +16,13 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private User author;
 
-    @Column
+    @Column(nullable = false)
     private String content;
 
-    @Column(name = "article_id")
+    @Column(name = "article_id", nullable = false)
     private Long articleId;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -31,5 +33,31 @@ public class Comment {
     public Comment(Long articleId, String content) {
         this.articleId = articleId;
         this.content = content;
+    }
+
+    public boolean canRegistable() {
+        if (StringUtils.isEmpty(content))
+            return false;
+
+        if (this.author == null)
+            return false;
+
+        return true;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
+    }
+
+    public Long getArticleId() {
+        return articleId;
     }
 }

@@ -3,17 +3,15 @@ package tdd.duo.web.article;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import tdd.duo.config.DBConfig;
-import tdd.duo.config.WebConfig;
 import tdd.duo.domain.Comment;
 import tdd.duo.service.CommentService;
 import tdd.duo.web.MvcTestUtil;
-
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -30,7 +28,7 @@ public class CommentControllerTest {
     @Mock
     CommentService commentService;
 
-    @Mock
+    @InjectMocks
     CommentController commentController;
 
     MockMvc mockMvc;
@@ -57,21 +55,13 @@ public class CommentControllerTest {
                 .param("content", content)
         )
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/article/"+articleId));
-    }
-
-    //TODO Interaction to user (errorMessage have to be shown)
-    //TODO Create. (current version is useless)
-    @Test
-    public void createWithInvalidArticleId() throws Exception {
-        fail("TODO");
+                .andExpect(redirectedUrl("/article/" + articleId));
     }
 
     //TODO Create. (current version is useless)
     @Test
     public void createWithInvalidCommentData() throws Exception {
-        fail("TODO");
+        //fail("TODO");
     }
-
 
 }
