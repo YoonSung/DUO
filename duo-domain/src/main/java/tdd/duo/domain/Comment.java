@@ -31,6 +31,11 @@ public class Comment {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
 
+    @ManyToOne
+    private Article article;
+
+
+
     @PrePersist
     protected void onCreate() {
         this.createdTime = new Date();

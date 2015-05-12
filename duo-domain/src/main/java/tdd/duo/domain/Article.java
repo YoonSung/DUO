@@ -27,14 +27,21 @@ public class Article {
     @JoinColumn(name = "user_id")
     private User author;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "article_id")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "article")
+    //@JoinColumn(name = "article_id")
     private List<Comment> comments;
 
     //TODO implement Listener Type
     @Column(updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
+
+    @Transient
+    private int viewCount;
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
+    }
 
     public Article() {}
 
@@ -43,6 +50,8 @@ public class Article {
         this.title = title;
         this.content = content;
     }
+
+
 
     public String getTitle() {
         return title;
