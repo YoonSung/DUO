@@ -1,2 +1,2 @@
 # DUO
-김우승, 정윤성
+TDD Study
